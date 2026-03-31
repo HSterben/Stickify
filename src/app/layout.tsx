@@ -14,7 +14,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Stickify — Your Personal Knowledge Board",
+  title: "Stickify | Your Knowledge Board",
   description:
     "Save, organize, and revisit everything that matters. A structured personal knowledge board for mixed content.",
   keywords: ["knowledge board", "notes", "bookmarks", "code snippets", "organizer"],
