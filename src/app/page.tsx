@@ -157,7 +157,7 @@ export default function LandingPage() {
               custom={2}
               className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400 md:text-xl"
             >
-              Notes, code snippets, and bookmarks — organized into visual boards
+              Notes, code snippets, and bookmarks, organized into visual boards
               that feel like your second brain. Not another messy note app.
             </motion.p>
 
@@ -171,7 +171,7 @@ export default function LandingPage() {
                 className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-8 py-3.5 text-sm font-semibold text-white shadow-xl shadow-violet-500/25 transition-all hover:shadow-violet-500/40 hover:brightness-110"
               >
                 <span className="relative z-10 flex items-center gap-2">
-                  Get Started — Free
+                  Get Started, Free
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </span>
               </Link>
@@ -352,7 +352,7 @@ export default function LandingPage() {
               </h2>
               <p className="mb-8 max-w-lg text-zinc-400">
                 AI that helps you tag, categorize, and discover connections in
-                your saved content. It suggests — you decide. No forced
+                your saved content. It suggests, you decide. No forced
                 auto-organization.
               </p>
               <div className="grid gap-3 sm:grid-cols-2">

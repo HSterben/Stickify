@@ -1,6 +1,6 @@
 # Stickify
 
-A personal knowledge board where you save, organize, and revisit everything that matters — notes, code snippets, and bookmarks, all in one place.
+A personal knowledge board where you save, organize, and revisit everything that matters, notes, code snippets, and bookmarks, all in one place.
 
 ## Tech Stack
 
@@ -45,14 +45,14 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Features
 
-- **Google Auth** — sign in with your Google account
-- **Category Boards** — organize saved content into visual boards
-- **Three Post Types** — text notes, code snippets with syntax highlighting, and link cards with auto-fetched metadata
-- **Tags & Search** — tag anything, filter by type, search across all boards
-- **Pin & Archive** — pin important posts, archive old ones
-- **AI Suggestions** — optional tag suggestions and content type detection
-- **Smooth Animations** — board transitions, modal animations, and card effects
-- **Responsive** — works on desktop, tablet, and mobile
+- **Google Auth**, sign in with your Google account
+- **Category Boards**, organize saved content into visual boards
+- **Three Post Types**, text notes, code snippets with syntax highlighting, and link cards with auto-fetched metadata
+- **Tags & Search**, tag anything, filter by type, search across all boards
+- **Pin & Archive**, pin important posts, archive old ones
+- **AI Suggestions**, optional tag suggestions and content type detection
+- **Smooth Animations**, board transitions, modal animations, and card effects
+- **Responsive**, works on desktop, tablet, and mobile
 
 ## Project Structure
 
