@@ -1,0 +1,43 @@
+{
+  "name": "stickify",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next": "^15.3.0",
+    "@supabase/supabase-js": "^2.49.0",
+    "@supabase/ssr": "^0.6.0",
+    "framer-motion": "^12.6.0",
+    "lucide-react": "^0.475.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.0.2",
+    "prismjs": "^1.30.0",
+    "cheerio": "^1.0.0",
+    "sonner": "^2.0.0",
+    "cmdk": "^1.1.0",
+    "ai": "^4.3.0",
+    "@ai-sdk/openai": "^1.3.0",
+    "next-themes": "^0.4.6"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/prismjs": "^1.26.5",
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "postcss": "^8.5.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^15.3.0",
+    "@eslint/eslintrc": "^3.0.0"
+  }
+}
