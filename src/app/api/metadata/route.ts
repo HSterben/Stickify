@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         title: parsedUrl.hostname,
         domain: parsedUrl.hostname.replace("www.", ""),
+        images: ["/web-preview.png"],
       });
     }
 
@@ -73,12 +74,14 @@ export async function POST(request: NextRequest) {
 
     const domain = parsedUrl.hostname.replace("www.", "");
 
+    // Add the images property with the local image
     return NextResponse.json({
       title: title?.slice(0, 200) || domain,
       description: description?.slice(0, 500) || "",
       image: image || null,
       favicon: favicon || null,
       domain,
+      images: ["/web-preview.png"],
     });
   } catch {
     return NextResponse.json(
