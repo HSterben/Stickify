@@ -14,11 +14,42 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
+const siteTitle = "Stickify | Your Knowledge Board";
+const siteDescription =
+  "Save, organize, and revisit everything that matters. A structured personal knowledge board for mixed content.";
+
+function metadataBaseUrl(): URL {
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return new URL(process.env.NEXT_PUBLIC_SITE_URL);
+  }
+  if (process.env.VERCEL_URL) {
+    return new URL(`https://${process.env.VERCEL_URL}`);
+  }
+  return new URL("http://localhost:3000");
+}
+
 export const metadata: Metadata = {
-  title: "Stickify | Your Knowledge Board",
-  description:
-    "Save, organize, and revisit everything that matters. A structured personal knowledge board for mixed content.",
+  metadataBase: metadataBaseUrl(),
+  title: siteTitle,
+  description: siteDescription,
   keywords: ["knowledge board", "notes", "bookmarks", "code snippets", "organizer"],
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    type: "website",
+    images: [
+      {
+        url: "/web-preview.png",
+        alt: siteTitle,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+    images: ["/web-preview.png"],
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", type: "image/x-icon" },
