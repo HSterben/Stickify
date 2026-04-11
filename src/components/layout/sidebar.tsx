@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 import { User } from "@supabase/supabase-js";
 import { Category, Profile } from "@/lib/types/database";
 import { createClient } from "@/lib/supabase/client";
@@ -125,12 +126,16 @@ export function Sidebar({
   return (
     <div className="flex h-full flex-col border-r border-sidebar-border bg-sidebar">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-5 py-5">
+      <Link
+        href="/dashboard/boards"
+        className="flex items-center gap-2.5 px-5 py-5 transition-opacity hover:opacity-90"
+        onClick={() => onClose()}
+      >
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 shadow-md shadow-violet-500/20">
           <Layers className="h-4 w-4 text-white" />
         </div>
         <span className="text-lg font-bold tracking-tight">Stickify</span>
-      </div>
+      </Link>
 
       {/* Boards header */}
       <div className="flex items-center justify-between px-5 py-2">
@@ -173,7 +178,7 @@ export function Sidebar({
           return (
             <div key={cat.id} className="group relative">
               {isEditing ? (
-                <div className="flex items-center gap-1 rounded-lg p-1">
+                <div className="flex items-center gap-2 rounded-lg p-1">
                   <input
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
@@ -181,20 +186,24 @@ export function Sidebar({
                       if (e.key === "Enter") handleRename(cat);
                       if (e.key === "Escape") setEditingId(null);
                     }}
-                    className="flex-1 rounded-md bg-zinc-800 px-2.5 py-1.5 text-sm text-white outline-none ring-1 ring-violet-500/50 focus:ring-violet-500"
+                    className="min-w-0 flex-1 rounded-md bg-zinc-800 px-2.5 py-1.5 text-sm text-white outline-none ring-1 ring-violet-500/50 focus:ring-violet-500"
                     autoFocus
                   />
                   <button
+                    type="button"
                     onClick={() => handleRename(cat)}
-                    className="flex h-7 w-7 items-center justify-center rounded-md text-emerald-400 hover:bg-zinc-800"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-emerald-400 hover:bg-zinc-800"
+                    aria-label="Save name"
                   >
-                    <Check className="h-3.5 w-3.5" />
+                    <Check className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => setEditingId(null)}
-                    className="flex h-7 w-7 items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-800"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-800"
+                    aria-label="Cancel rename"
                   >
-                    <X className="h-3.5 w-3.5" />
+                    <X className="h-4 w-4" />
                   </button>
                 </div>
               ) : (
@@ -261,7 +270,7 @@ export function Sidebar({
 
         {/* Create new board input */}
         {isCreating && (
-          <div className="mt-1 flex items-center gap-1 rounded-lg p-1">
+          <div className="mt-1 flex items-center gap-2 rounded-lg p-1">
             <input
               ref={inputRef}
               value={newName}
@@ -274,22 +283,26 @@ export function Sidebar({
                 }
               }}
               placeholder="Board name..."
-              className="flex-1 rounded-md bg-zinc-800 px-2.5 py-1.5 text-sm text-white placeholder-zinc-500 outline-none ring-1 ring-violet-500/50 focus:ring-violet-500"
+              className="min-w-0 flex-1 rounded-md bg-zinc-800 px-2.5 py-1.5 text-sm text-white placeholder-zinc-500 outline-none ring-1 ring-violet-500/50 focus:ring-violet-500"
             />
             <button
+              type="button"
               onClick={handleCreate}
-              className="flex h-7 w-7 items-center justify-center rounded-md text-emerald-400 hover:bg-zinc-800"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-emerald-400 hover:bg-zinc-800"
+              aria-label="Create board"
             >
-              <Check className="h-3.5 w-3.5" />
+              <Check className="h-4 w-4" />
             </button>
             <button
+              type="button"
               onClick={() => {
                 setIsCreating(false);
                 setNewName("");
               }}
-              className="flex h-7 w-7 items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-800"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-800"
+              aria-label="Cancel"
             >
-              <X className="h-3.5 w-3.5" />
+              <X className="h-4 w-4" />
             </button>
           </div>
         )}

@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { createPortal } from "react-dom";
 import { PostWithTags } from "@/lib/types/database";
 import { createClient } from "@/lib/supabase/client";
-import { cn, getRelativeTime, truncate, getDomain } from "@/lib/utils";
+import { cn, getRelativeTime, getDomain, truncate } from "@/lib/utils";
+import { MarkdownContent } from "@/components/posts/markdown-content";
 import { toast } from "sonner";
 import {
   FileText,
@@ -35,6 +37,7 @@ import Image from "next/image";
 interface PostCardProps {
   post: PostWithTags;
   onEdit: () => void;
+  onOpen: () => void;
   onDeleted: (id: string) => void;
   onUpdated: (post: PostWithTags) => void;
 }
@@ -45,10 +48,13 @@ const typeConfig = {
   link: { icon: Globe, color: "text-sky-400", bg: "bg-sky-500/10", border: "border-sky-500/10" },
 };
 
-export function PostCard({ post, onEdit, onDeleted, onUpdated }: PostCardProps) {
+export function PostCard({ post, onEdit, onOpen, onDeleted, onUpdated }: PostCardProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuPlacement, setMenuPlacement] = useState<{ top: number; left: number } | null>(null);
   const [copied, setCopied] = useState(false);
   const codeRef = useRef<HTMLElement>(null);
+  const menuAnchorRef = useRef<HTMLDivElement>(null);
+  const menuPanelRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
   const config = typeConfig[post.type];
 
@@ -57,6 +63,51 @@ export function PostCard({ post, onEdit, onDeleted, onUpdated }: PostCardProps) 
       Prism.highlightElement(codeRef.current);
     }
   }, [post.type, post.content_code]);
+
+  useLayoutEffect(() => {
+    if (!menuOpen) {
+      setMenuPlacement(null);
+      return;
+    }
+
+    const updatePlacement = () => {
+      const anchor = menuAnchorRef.current;
+      const panel = menuPanelRef.current;
+      if (!anchor || !panel) return;
+
+      const ar = anchor.getBoundingClientRect();
+      const margin = 8;
+      const menuWidth = panel.offsetWidth;
+      const menuHeight = panel.offsetHeight;
+
+      let top = ar.top - menuHeight - margin;
+      let left = ar.right - menuWidth;
+
+      if (top < margin) {
+        top = ar.bottom + margin;
+      }
+      if (left < margin) left = margin;
+      if (left + menuWidth > window.innerWidth - margin) {
+        left = window.innerWidth - menuWidth - margin;
+      }
+
+      setMenuPlacement({ top, left });
+    };
+
+    updatePlacement();
+    const raf = requestAnimationFrame(() => {
+      requestAnimationFrame(updatePlacement);
+    });
+
+    window.addEventListener("resize", updatePlacement);
+    document.addEventListener("scroll", updatePlacement, true);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", updatePlacement);
+      document.removeEventListener("scroll", updatePlacement, true);
+    };
+  }, [menuOpen]);
 
   const handlePin = async () => {
     const { error } = await (supabase as any)
@@ -104,10 +155,19 @@ export function PostCard({ post, onEdit, onDeleted, onUpdated }: PostCardProps) 
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-xl border bg-card/50 transition-all hover:bg-card/80 hover:shadow-lg hover:shadow-black/10",
+        "group relative cursor-pointer rounded-xl border bg-card/50 transition-all hover:bg-card/80 hover:shadow-lg hover:shadow-black/10",
         post.color ? "" : config.border
       )}
       style={cardStyle}
+      onClick={onOpen}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen();
+        }
+      }}
+      tabIndex={0}
+      role="article"
     >
       {/* Pin indicator */}
       {post.is_pinned && (
@@ -118,7 +178,7 @@ export function PostCard({ post, onEdit, onDeleted, onUpdated }: PostCardProps) 
 
       {/* Link preview image */}
       {post.type === "link" && post.preview_image && (
-        <div className="relative h-36 w-full overflow-hidden bg-zinc-900">
+        <div className="relative h-36 w-full overflow-hidden rounded-t-xl bg-zinc-900">
           <Image
             src={post.preview_image}
             alt={post.preview_title || post.title}
@@ -140,10 +200,10 @@ export function PostCard({ post, onEdit, onDeleted, onUpdated }: PostCardProps) 
         </div>
 
         {/* Content body */}
-        {post.type === "text" && post.content_text && (
-          <p className="mb-3 text-sm leading-relaxed text-zinc-400">
-            {truncate(post.content_text, 200)}
-          </p>
+        {post.type === "text" && post.content_text?.trim() && (
+          <div className="mb-3 line-clamp-6 text-left [&_img]:max-h-32">
+            <MarkdownContent content={post.content_text} showEmptyHint={false} />
+          </div>
         )}
 
         {post.type === "code" && post.content_code && (
@@ -155,7 +215,11 @@ export function PostCard({ post, onEdit, onDeleted, onUpdated }: PostCardProps) 
                 </span>
               )}
               <button
-                onClick={handleCopyCode}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCopyCode();
+                }}
                 className="flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] text-zinc-500 transition-colors hover:bg-zinc-800 hover:text-zinc-300"
               >
                 {copied ? (
@@ -194,6 +258,7 @@ export function PostCard({ post, onEdit, onDeleted, onUpdated }: PostCardProps) 
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs text-sky-400 transition-colors hover:text-sky-300"
+              onClick={(e) => e.stopPropagation()}
             >
               {post.preview_favicon && (
                 <Image
@@ -231,46 +296,110 @@ export function PostCard({ post, onEdit, onDeleted, onUpdated }: PostCardProps) 
             {getRelativeTime(post.created_at)}
           </span>
 
-          <div className="relative">
+          <div ref={menuAnchorRef} className="relative z-[90]">
             <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="flex h-6 w-6 items-center justify-center rounded-md opacity-0 transition-opacity group-hover:opacity-100 hover:bg-zinc-800"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setMenuOpen(!menuOpen);
+              }}
+              className={cn(
+                "flex h-8 w-8 items-center justify-center rounded-md transition-opacity hover:bg-zinc-800",
+                menuOpen ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+              )}
+              aria-expanded={menuOpen}
+              aria-haspopup="menu"
             >
               <MoreHorizontal className="h-3.5 w-3.5 text-zinc-500" />
             </button>
 
-            {menuOpen && (
-              <>
-                <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
-                <div className="absolute right-0 bottom-full z-20 mb-1 w-40 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 shadow-xl">
-                  <button
-                    onClick={() => { onEdit(); setMenuOpen(false); }}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-800"
+            {menuOpen &&
+              typeof document !== "undefined" &&
+              createPortal(
+                <>
+                  <div
+                    className="fixed inset-0 z-[200]"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMenuOpen(false);
+                    }}
+                    aria-hidden
+                  />
+                  <div
+                    ref={menuPanelRef}
+                    role="menu"
+                    style={
+                      menuPlacement
+                        ? {
+                            position: "fixed",
+                            top: menuPlacement.top,
+                            left: menuPlacement.left,
+                            zIndex: 210,
+                          }
+                        : {
+                            position: "fixed",
+                            top: 0,
+                            left: 0,
+                            zIndex: 210,
+                            visibility: "hidden",
+                            pointerEvents: "none",
+                          }
+                    }
+                    className="min-w-[10.5rem] overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 py-1 shadow-xl ring-1 ring-black/20"
                   >
-                    <Pencil className="h-3.5 w-3.5" /> Edit
-                  </button>
-                  <button
-                    onClick={() => { handlePin(); setMenuOpen(false); }}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-800"
-                  >
-                    {post.is_pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
-                    {post.is_pinned ? "Unpin" : "Pin to top"}
-                  </button>
-                  <button
-                    onClick={() => { handleArchive(); setMenuOpen(false); }}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-800"
-                  >
-                    <Archive className="h-3.5 w-3.5" /> Archive
-                  </button>
-                  <button
-                    onClick={() => { handleDelete(); setMenuOpen(false); }}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-zinc-800"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" /> Delete
-                  </button>
-                </div>
-              </>
-            )}
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEdit();
+                        setMenuOpen(false);
+                      }}
+                      className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-zinc-300 hover:bg-zinc-800"
+                    >
+                      <Pencil className="h-3.5 w-3.5" /> Edit
+                    </button>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePin();
+                        setMenuOpen(false);
+                      }}
+                      className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-zinc-300 hover:bg-zinc-800"
+                    >
+                      {post.is_pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
+                      {post.is_pinned ? "Unpin" : "Pin to top"}
+                    </button>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleArchive();
+                        setMenuOpen(false);
+                      }}
+                      className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-zinc-300 hover:bg-zinc-800"
+                    >
+                      <Archive className="h-3.5 w-3.5" /> Archive
+                    </button>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete();
+                        setMenuOpen(false);
+                      }}
+                      className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-red-400 hover:bg-zinc-800"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" /> Delete
+                    </button>
+                  </div>
+                </>,
+                document.body
+              )}
           </div>
         </div>
       </div>

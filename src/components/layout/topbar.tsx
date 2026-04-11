@@ -39,21 +39,23 @@ export function Topbar({ user, profile }: TopbarProps) {
 
   return (
     <>
-      <header className="flex h-14 shrink-0 items-center justify-between border-b border-zinc-800/50 bg-background/80 px-4 backdrop-blur-sm lg:px-6">
-        <div className="flex items-center gap-3 lg:ml-0 ml-12">
+      <header className="relative z-30 flex h-14 shrink-0 items-center gap-3 border-b border-zinc-800/50 bg-background/80 px-4 backdrop-blur-sm lg:gap-4 lg:px-6">
+        <div className="flex min-w-0 flex-1 items-center pl-12 lg:pl-0">
           <button
+            type="button"
+            aria-label="Search posts"
             onClick={() => setSearchOpen(true)}
-            className="flex items-center gap-2 rounded-lg border border-zinc-800/50 bg-zinc-900/50 px-3 py-1.5 text-sm text-zinc-500 transition-colors hover:border-zinc-700 hover:text-zinc-400"
+            className="flex h-10 w-full max-w-none items-center gap-3 rounded-xl border border-zinc-800/50 bg-zinc-900/50 px-4 py-2 text-left text-sm text-zinc-500 transition-colors hover:border-zinc-700 hover:text-zinc-400"
           >
-            <Search className="h-4 w-4" />
-            <span className="hidden sm:inline">Search posts...</span>
-            <kbd className="ml-4 hidden rounded border border-zinc-700 bg-zinc-800 px-1.5 py-0.5 text-[10px] font-medium text-zinc-500 sm:inline">
+            <Search className="h-4 w-4 shrink-0" />
+            <span className="min-w-0 flex-1 truncate hidden sm:block">Search posts...</span>
+            <kbd className="ml-auto hidden shrink-0 rounded border border-zinc-700 bg-zinc-800 px-2 py-0.5 text-[10px] font-medium text-zinc-500 sm:inline">
               ⌘K
             </kbd>
           </button>
         </div>
 
-        <div className="relative">
+        <div className="relative shrink-0">
           <button
             onClick={() => setProfileOpen(!profileOpen)}
             className="flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-zinc-800/50"

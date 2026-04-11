@@ -53,6 +53,40 @@ export const POST_COLORS = [
   { name: "Pink", value: "#fbcfe8" },
 ] as const;
 
+const PRESET_HEX = new Set<string>(
+  POST_COLORS.filter((c) => c.value != null).map((c) => c.value as string)
+);
+
+/** Normalize `#rgb` / `#rrggbb` (optional leading #) to lowercase `#rrggbb`, or null if invalid. */
+export function parseHexColor(input: string): string | null {
+  const t = input.trim();
+  const m = t.match(/^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/);
+  if (!m) return null;
+  let h = m[1];
+  if (h.length === 3) {
+    h = h
+      .split("")
+      .map((ch) => ch + ch)
+      .join("");
+  }
+  return `#${h.toLowerCase()}`;
+}
+
+export function colorsEqual(a: string | null, b: string | null): boolean {
+  if (a == null && b == null) return true;
+  if (a == null || b == null) return false;
+  const pa = parseHexColor(a);
+  const pb = parseHexColor(b);
+  return pa != null && pb != null && pa === pb;
+}
+
+/** True when `color` matches a built-in preset swatch (not custom / not default). */
+export function isPresetAccentColor(color: string | null): boolean {
+  if (color == null) return false;
+  const p = parseHexColor(color);
+  return p != null && PRESET_HEX.has(p);
+}
+
 export const CODE_LANGUAGES = [
   "javascript",
   "typescript",

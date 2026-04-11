@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { PostWithTags } from "@/lib/types/database";
-import { CODE_LANGUAGES, POST_COLORS } from "@/lib/utils";
+import { CODE_LANGUAGES } from "@/lib/utils";
+import { AccentColorPicker } from "./accent-color-picker";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -15,6 +16,7 @@ import {
   Plus,
 } from "lucide-react";
 import { TagInput } from "./tag-input";
+import { MarkdownContent } from "./markdown-content";
 
 interface CreatePostModalProps {
   open: boolean;
@@ -226,14 +228,25 @@ export function CreatePostModal({
               {/* Text content */}
               {type === "text" && (
                 <div>
-                  <label className="mb-1.5 block text-xs font-medium text-zinc-400">Content</label>
+                  <label className="mb-1.5 block text-xs font-medium text-zinc-400">
+                    Content
+                    <span className="ml-1.5 font-normal text-zinc-600">(Markdown — preview below)</span>
+                  </label>
                   <textarea
                     value={contentText}
                     onChange={(e) => setContentText(e.target.value)}
                     placeholder="Write your note..."
-                    rows={5}
+                    rows={8}
                     className="w-full rounded-lg border border-zinc-800 bg-zinc-800/50 px-3 py-2.5 text-sm text-white placeholder-zinc-600 outline-none transition-colors focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/20 resize-none"
                   />
+                  {contentText.trim() ? (
+                    <div className="mt-3 max-h-56 overflow-y-auto rounded-lg border border-zinc-800/80 bg-zinc-950/40 p-3">
+                      <p className="mb-2 text-[10px] font-medium uppercase tracking-wider text-zinc-500">
+                        Preview
+                      </p>
+                      <MarkdownContent content={contentText} showEmptyHint={false} />
+                    </div>
+                  ) : null}
                 </div>
               )}
 
@@ -303,25 +316,7 @@ export function CreatePostModal({
 
               {/* Color picker */}
               {type === "text" && (
-                <div>
-                  <label className="mb-1.5 block text-xs font-medium text-zinc-400">Accent Color</label>
-                  <div className="flex gap-2">
-                    {POST_COLORS.map((c) => (
-                      <button
-                        key={c.name}
-                        onClick={() => setColor(c.value)}
-                        className={`h-7 w-7 rounded-full border-2 transition-all ${
-                          color === c.value
-                            ? "border-white scale-110"
-                            : "border-transparent hover:scale-105"
-                        }`}
-                        style={{
-                          backgroundColor: c.value || "#27272a",
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
+                <AccentColorPicker value={color} onChange={setColor} />
               )}
 
               {/* Tags */}

@@ -5,6 +5,7 @@ import { Category, PostWithTags } from "@/lib/types/database";
 import { PostCard } from "./post-card";
 import { CreatePostModal } from "@/components/posts/create-post-modal";
 import { EditPostModal } from "@/components/posts/edit-post-modal";
+import { PostViewModal } from "@/components/posts/post-view-modal";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus,
@@ -28,6 +29,7 @@ export function BoardView({ category, initialPosts }: BoardViewProps) {
   const [posts, setPosts] = useState<PostWithTags[]>(initialPosts);
   const [createOpen, setCreateOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<PostWithTags | null>(null);
+  const [viewingPost, setViewingPost] = useState<PostWithTags | null>(null);
   const [filterType, setFilterType] = useState<FilterType>("all");
   const [sortBy, setSortBy] = useState<SortBy>("newest");
   const [filterTag, setFilterTag] = useState<string | null>(null);
@@ -231,6 +233,7 @@ export function BoardView({ category, initialPosts }: BoardViewProps) {
               >
                 <PostCard
                   post={post}
+                  onOpen={() => setViewingPost(post)}
                   onEdit={() => setEditingPost(post)}
                   onDeleted={handlePostDeleted}
                   onUpdated={handlePostUpdated}
@@ -248,8 +251,19 @@ export function BoardView({ category, initialPosts }: BoardViewProps) {
         onCreated={handlePostCreated}
       />
 
+      <PostViewModal
+        open={!!viewingPost}
+        post={viewingPost}
+        onClose={() => setViewingPost(null)}
+        onEdit={(p) => {
+          setViewingPost(null);
+          setEditingPost(p);
+        }}
+      />
+
       {editingPost && (
         <EditPostModal
+          key={editingPost.id}
           open={!!editingPost}
           onClose={() => setEditingPost(null)}
           post={editingPost}
