@@ -77,7 +77,7 @@ export default function LandingPage() {
       <StickifyGrainient className="pointer-events-none fixed inset-0 z-0" />
 
       {/* Nav */}
-      <nav className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-5 md:px-12">
+      <nav className="relative z-10 mx-auto flex w-full max-w-6xl shrink-0 items-center justify-between px-6 py-5 md:px-12">
         <Link href="/" className="flex items-center gap-2.5">
           <div className="btn-brand flex h-9 w-9 items-center justify-center rounded-xl">
             <Layers className="h-5 w-5 text-white" />
