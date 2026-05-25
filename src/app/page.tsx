@@ -73,7 +73,7 @@ const features = [
 
 export default function LandingPage() {
   return (
-    <div className="page-marketing relative min-h-screen overflow-hidden">
+    <div className="page-marketing relative flex min-h-screen flex-col overflow-hidden">
       <StickifyGrainient className="pointer-events-none fixed inset-0 z-0" />
 
       {/* Nav */}
@@ -94,7 +94,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <main className="relative z-10">
+      <main className="relative z-10 flex flex-1 flex-col">
         <section className="mx-auto max-w-5xl px-6 pt-20 pb-32 text-center md:pt-32 md:pb-40">
           <motion.div
             initial="hidden"
@@ -183,7 +183,7 @@ export default function LandingPage() {
                       <div className="h-2 w-24 rounded bg-zinc-700" />
                       <div className="ml-auto h-6 w-6 rounded-md bg-zinc-800" />
                     </div>
-                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5">
                       {/* Text card mock */}
                       <div className="rounded-lg border border-rose-500/10 bg-rose-500/5 p-3">
                         <div className="mb-2 flex items-center gap-1.5">
@@ -256,7 +256,7 @@ export default function LandingPage() {
         {/* Features */}
         <section
           id="features"
-          className="section-fade-top relative mx-auto max-w-6xl px-6 pt-16 pb-32"
+          className="section-fade-top relative mx-auto mt-16 max-w-6xl px-6 pt-16 pb-32 md:mt-24"
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -276,7 +276,7 @@ export default function LandingPage() {
             </p>
           </motion.div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 sm:gap-7 lg:grid-cols-3 lg:gap-8">
             {features.map((feature, i) => (
               <motion.div
                 key={feature.title}
@@ -301,7 +301,7 @@ export default function LandingPage() {
         </section>
 
         {/* AI Section */}
-        <section className="mx-auto max-w-4xl px-6 pb-32">
+        <section className="mx-auto mt-16 max-w-4xl px-6 pb-32 md:mt-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -323,7 +323,7 @@ export default function LandingPage() {
                 your saved content. It suggests, you decide. No forced
                 auto-organization.
               </p>
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
                 {[
                   "Suggest tags from content",
                   "Detect code vs. plain text",
@@ -346,7 +346,7 @@ export default function LandingPage() {
         </section>
 
         {/* Bottom CTA */}
-        <section className="mx-auto max-w-4xl px-6 pb-32 text-center">
+        <section className="mx-auto mt-16 max-w-4xl px-6 pb-32 text-center md:mt-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -371,7 +371,7 @@ export default function LandingPage() {
         </section>
 
         {/* Footer */}
-        <footer className="glass-on-gradient mx-6 mb-6 rounded-2xl border-t-0 px-6 py-8 text-center text-xs text-zinc-400 md:mx-12">
+        <footer className="glass-on-gradient mx-6 mt-auto rounded-2xl border-t-0 px-6 py-8 text-center text-xs text-zinc-400 md:mx-12">
           <div className="flex items-center justify-center gap-2">
             <Layers className="h-4 w-4" />
             <span>Stickify</span>
