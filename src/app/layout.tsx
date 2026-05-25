@@ -78,6 +78,9 @@ export async function generateMetadata(): Promise<Metadata> {
       shortcut: { url: "/favicon.ico", type: "image/x-icon" },
       apple: { url: "/icon.png", type: "image/png", sizes: "256x256" },
     },
+    verification: {
+      google: "QhMBV989EY0RI4qnyU82UIeTLWdq5BiyhBlmWVRzMpM",
+    },
   };
 }
 
