@@ -15,6 +15,7 @@ import {
   Shield,
   Globe,
 } from "lucide-react";
+import { StickifyGrainient } from "@/components/ui/stickify-grainient";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -51,8 +52,8 @@ const features = [
     icon: Layers,
     title: "Category Boards",
     description: "Organize everything into visual boards with smooth swipe transitions.",
-    gradient: "from-violet-500/20 to-purple-500/20",
-    iconColor: "text-violet-400",
+    gradient: "from-brand/25 to-brand-light/20",
+    iconColor: "text-brand-light",
   },
   {
     icon: Tags,
@@ -72,54 +73,20 @@ const features = [
 
 export default function LandingPage() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background">
-      {/* Abstract background */}
-      <div className="pointer-events-none fixed inset-0">
-        <div className="absolute top-0 left-1/4 h-[600px] w-[600px] rounded-full bg-violet-600/[0.07] blur-[120px]" />
-        <div className="absolute top-1/3 right-1/4 h-[500px] w-[500px] rounded-full bg-indigo-600/[0.05] blur-[100px]" />
-        <div className="absolute bottom-0 left-1/2 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-purple-600/[0.06] blur-[100px]" />
-      </div>
-
-      {/* Floating abstract shapes */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <motion.div
-          animate={{ y: [-10, 10, -10], rotate: [0, 5, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-20 left-[10%] h-20 w-20 rounded-2xl border border-violet-500/10 bg-violet-500/5"
-        />
-        <motion.div
-          animate={{ y: [10, -15, 10], rotate: [0, -3, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-40 right-[15%] h-14 w-14 rounded-full border border-indigo-500/10 bg-indigo-500/5"
-        />
-        <motion.div
-          animate={{ y: [-5, 15, -5], x: [-5, 5, -5] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[60%] left-[8%] h-24 w-24 rounded-3xl border border-purple-500/10 bg-purple-500/5 rotate-12"
-        />
-        <motion.div
-          animate={{ y: [8, -12, 8], rotate: [45, 50, 45] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[30%] right-[8%] h-16 w-16 rounded-xl border border-fuchsia-500/10 bg-fuchsia-500/5 rotate-45"
-        />
-        <motion.div
-          animate={{ y: [-8, 8, -8] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[25%] right-[20%] h-10 w-10 rounded-lg border border-sky-500/10 bg-sky-500/5"
-        />
-      </div>
+    <div className="page-marketing relative min-h-screen overflow-hidden">
+      <StickifyGrainient className="pointer-events-none fixed inset-0 z-0" />
 
       {/* Nav */}
-      <nav className="relative z-10 flex items-center justify-between px-6 py-5 md:px-12">
+      <nav className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-5 md:px-12">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 shadow-lg shadow-violet-500/25">
+          <div className="btn-brand flex h-9 w-9 items-center justify-center rounded-xl">
             <Layers className="h-5 w-5 text-white" />
           </div>
-          <span className="text-xl font-bold tracking-tight">Stickify</span>
+          <span className="text-xl font-bold tracking-tight text-white">Stickify</span>
         </Link>
         <Link
           href="/login"
-          className="group flex items-center gap-2 rounded-full bg-white/5 px-5 py-2.5 text-sm font-medium text-white/90 ring-1 ring-white/10 transition-all hover:bg-white/10 hover:ring-white/20"
+          className="btn-ghost group flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white/90 transition-all"
         >
           Sign in
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -137,8 +104,8 @@ export default function LandingPage() {
             }}
           >
             <motion.div variants={fadeUp} custom={0} className="mb-6">
-              <span className="inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-1.5 text-xs font-medium text-violet-300">
-                <Zap className="h-3.5 w-3.5" />
+              <span className="badge-brand inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium">
+                <Zap className="h-3.5 w-3.5 text-brand-light" />
                 Your personal knowledge board
               </span>
             </motion.div>
@@ -155,7 +122,7 @@ export default function LandingPage() {
             <motion.p
               variants={fadeUp}
               custom={2}
-              className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400 md:text-xl"
+              className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-300/90 md:text-xl"
             >
               Notes, code snippets, and bookmarks, organized into visual boards
               that feel like your second brain. Not another messy note app.
@@ -168,16 +135,14 @@ export default function LandingPage() {
             >
               <Link
                 href="/login"
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-8 py-3.5 text-sm font-semibold text-white shadow-xl shadow-violet-500/25 transition-all hover:shadow-violet-500/40 hover:brightness-110"
+                className="btn-brand group inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-white transition-all hover:brightness-110"
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  Get Started, Free
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </span>
+                Get Started, Free
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <a
                 href="#features"
-                className="inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-medium text-zinc-400 transition-colors hover:text-white"
+                className="btn-ghost inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-medium text-zinc-300 transition-colors hover:text-white"
               >
                 See how it works
               </a>
@@ -191,20 +156,20 @@ export default function LandingPage() {
             transition={{ delay: 0.6, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="relative mx-auto mt-20 max-w-4xl"
           >
-            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-violet-600/20 via-indigo-600/20 to-purple-600/20 blur-2xl" />
-            <div className="glass-strong relative overflow-hidden rounded-2xl p-1 shadow-2xl">
+            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-brand/30 via-brand-light/20 to-brand/10 blur-2xl" />
+            <div className="glass-strong relative overflow-hidden rounded-2xl p-1">
               <div className="rounded-xl bg-surface p-6">
                 {/* Mock dashboard */}
                 <div className="flex gap-4">
                   {/* Mini sidebar */}
                   <div className="hidden w-40 shrink-0 rounded-lg bg-background/50 p-3 md:block">
-                    <div className="mb-3 h-2 w-16 rounded bg-violet-500/30" />
+                    <div className="mb-3 h-2 w-16 rounded bg-brand/30" />
                     {["Frontend", "Backend", "Design", "Ideas"].map((cat, i) => (
                       <div
                         key={cat}
                         className={`mb-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium ${
                           i === 0
-                            ? "bg-violet-500/15 text-violet-300"
+                            ? "bg-brand/20 text-brand-light"
                             : "text-zinc-500"
                         }`}
                       >
@@ -289,7 +254,10 @@ export default function LandingPage() {
         </section>
 
         {/* Features */}
-        <section id="features" className="mx-auto max-w-6xl px-6 pb-32">
+        <section
+          id="features"
+          className="section-fade-top relative mx-auto max-w-6xl px-6 pt-16 pb-32"
+        >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -299,9 +267,9 @@ export default function LandingPage() {
           >
             <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
               Everything you need.{" "}
-              <span className="text-zinc-500">Nothing you don&apos;t.</span>
+              <span className="text-zinc-400">Nothing you don&apos;t.</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-zinc-400">
+            <p className="mx-auto mt-4 max-w-xl text-zinc-300/80">
               Three content types, visual boards, tags, and search. Simple enough
               to use daily, powerful enough to replace scattered bookmarks and
               notes.
@@ -316,7 +284,7 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: i * 0.08, duration: 0.5 }}
-                className="group relative rounded-2xl border border-zinc-800/50 bg-card/50 p-6 transition-all hover:border-zinc-700/50 hover:bg-card/80"
+                className="glass-on-gradient group relative rounded-2xl p-6 transition-all hover:border-brand-light/25"
               >
                 <div
                   className={`mb-4 inline-flex rounded-xl bg-gradient-to-br ${feature.gradient} p-3`}
@@ -324,7 +292,7 @@ export default function LandingPage() {
                   <feature.icon className={`h-5 w-5 ${feature.iconColor}`} />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold">{feature.title}</h3>
-                <p className="text-sm leading-relaxed text-zinc-400">
+                <p className="text-sm leading-relaxed text-zinc-300/75">
                   {feature.description}
                 </p>
               </motion.div>
@@ -339,18 +307,18 @@ export default function LandingPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="relative overflow-hidden rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-500/10 via-indigo-500/5 to-transparent p-8 md:p-12"
+            className="glass-on-gradient relative overflow-hidden rounded-3xl border-brand-light/20 p-8 md:p-12"
           >
-            <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-violet-600/10 blur-[80px]" />
+            <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-brand/20 blur-[80px]" />
             <div className="relative">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-violet-500/15 px-4 py-1.5 text-xs font-medium text-violet-300">
+              <div className="badge-brand mb-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium">
                 <Sparkles className="h-3.5 w-3.5" />
                 AI-Assisted
               </div>
               <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
                 Smart suggestions,<br />not autopilot.
               </h2>
-              <p className="mb-8 max-w-lg text-zinc-400">
+              <p className="mb-8 max-w-lg text-zinc-300/80">
                 AI that helps you tag, categorize, and discover connections in
                 your saved content. It suggests, you decide. No forced
                 auto-organization.
@@ -364,10 +332,10 @@ export default function LandingPage() {
                 ].map((item) => (
                   <div
                     key={item}
-                    className="flex items-center gap-3 rounded-xl bg-white/[0.03] px-4 py-3 text-sm text-zinc-300"
+                    className="flex items-center gap-3 rounded-xl border border-brand-light/10 bg-white/[0.04] px-4 py-3 text-sm text-zinc-200"
                   >
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-violet-500/20">
-                      <Sparkles className="h-3 w-3 text-violet-400" />
+                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand/25">
+                      <Sparkles className="h-3 w-3 text-brand-light" />
                     </div>
                     {item}
                   </div>
@@ -385,8 +353,8 @@ export default function LandingPage() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
           >
-            <div className="mb-4 inline-flex items-center gap-2 text-sm text-zinc-500">
-              <Shield className="h-4 w-4" />
+            <div className="mb-4 inline-flex items-center gap-2 text-sm text-zinc-400">
+              <Shield className="h-4 w-4 text-brand-light" />
               Private by default. Your data, your boards.
             </div>
             <h2 className="mb-6 text-3xl font-bold tracking-tight md:text-4xl">
@@ -394,7 +362,7 @@ export default function LandingPage() {
             </h2>
             <Link
               href="/login"
-              className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-8 py-3.5 text-sm font-semibold text-white shadow-xl shadow-violet-500/25 transition-all hover:shadow-violet-500/40 hover:brightness-110"
+              className="btn-brand group inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-white transition-all hover:brightness-110"
             >
               Start organizing for free
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -403,7 +371,7 @@ export default function LandingPage() {
         </section>
 
         {/* Footer */}
-        <footer className="border-t border-zinc-800/50 px-6 py-8 text-center text-xs text-zinc-500">
+        <footer className="glass-on-gradient mx-6 mb-6 rounded-2xl border-t-0 px-6 py-8 text-center text-xs text-zinc-400 md:mx-12">
           <div className="flex items-center justify-center gap-2">
             <Layers className="h-4 w-4" />
             <span>Stickify</span>

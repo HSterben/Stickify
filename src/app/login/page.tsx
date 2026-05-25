@@ -6,6 +6,7 @@ import { Layers, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { StickifyGrainient } from "@/components/ui/stickify-grainient";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -46,30 +47,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden">
-      {/* Abstract background */}
-      <div className="pointer-events-none fixed inset-0">
-        <div className="absolute top-1/4 left-1/3 h-[500px] w-[500px] rounded-full bg-violet-600/[0.08] blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/3 h-[400px] w-[400px] rounded-full bg-indigo-600/[0.06] blur-[100px]" />
-      </div>
-
-      {/* Floating shapes */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <motion.div
-          animate={{ y: [-10, 10, -10], rotate: [0, 5, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[20%] left-[15%] h-16 w-16 rounded-2xl border border-violet-500/10 bg-violet-500/5"
-        />
-        <motion.div
-          animate={{ y: [10, -15, 10] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[30%] right-[20%] h-12 w-12 rounded-full border border-indigo-500/10 bg-indigo-500/5"
-        />
-      </div>
+    <div className="page-marketing relative flex min-h-screen items-center justify-center overflow-hidden">
+      <StickifyGrainient className="pointer-events-none fixed inset-0 z-0" />
 
       <Link
         href="/"
-        className="absolute top-6 left-6 z-10 flex items-center gap-2 text-sm text-zinc-500 transition-colors hover:text-white"
+        className="btn-ghost absolute top-6 left-6 z-10 flex items-center gap-2 rounded-full px-4 py-2 text-sm text-zinc-300 transition-colors hover:text-white"
       >
         <ArrowLeft className="h-4 w-4" />
         Back
@@ -82,16 +65,18 @@ export default function LoginPage() {
         className="relative z-10 w-full max-w-sm px-6"
       >
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 shadow-lg shadow-violet-500/25">
+          <div className="btn-brand mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl">
             <Layers className="h-7 w-7 text-white" />
           </div>
-          <h1 className="text-2xl font-bold tracking-tight">Welcome to Stickify</h1>
-          <p className="mt-2 text-sm text-zinc-400">
+          <h1 className="text-2xl font-bold tracking-tight text-white">
+            Welcome to Stickify
+          </h1>
+          <p className="mt-2 text-sm text-zinc-300/80">
             Sign in to access your personal knowledge boards
           </p>
         </div>
 
-        <div className="rounded-2xl border border-zinc-800/50 bg-card/50 p-6 backdrop-blur-sm">
+        <div className="glass-strong rounded-2xl p-6">
           <button
             onClick={handleGoogleLogin}
             className="group flex w-full items-center justify-center gap-3 rounded-xl bg-white px-4 py-3 text-sm font-medium text-zinc-900 shadow-sm transition-all hover:bg-zinc-100 hover:shadow-md active:scale-[0.98]"
@@ -117,7 +102,7 @@ export default function LoginPage() {
             Continue with Google
           </button>
 
-          <p className="mt-4 text-center text-xs text-zinc-500">
+          <p className="mt-4 text-center text-xs text-zinc-400">
             Your data is private and only accessible to you
           </p>
         </div>

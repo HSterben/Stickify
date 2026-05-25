@@ -3,30 +3,32 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-background: #09090b;
+  --color-background: #141414;
   --color-foreground: #fafafa;
-  --color-card: #18181b;
+  --color-card: #1c1c1f;
   --color-card-foreground: #fafafa;
-  --color-popover: #18181b;
+  --color-popover: #1c1c1f;
   --color-popover-foreground: #fafafa;
-  --color-primary: #a78bfa;
-  --color-primary-foreground: #09090b;
-  --color-secondary: #27272a;
+  --color-primary: #854efe;
+  --color-primary-foreground: #fafafa;
+  --color-secondary: #252528;
   --color-secondary-foreground: #fafafa;
-  --color-muted: #27272a;
+  --color-muted: #252528;
   --color-muted-foreground: #a1a1aa;
-  --color-accent: #27272a;
+  --color-accent: #2a2540;
   --color-accent-foreground: #fafafa;
   --color-destructive: #ef4444;
   --color-destructive-foreground: #fafafa;
-  --color-border: #27272a;
-  --color-input: #27272a;
-  --color-ring: #a78bfa;
-  --color-sidebar: #0f0f12;
+  --color-border: rgba(133, 78, 254, 0.12);
+  --color-input: #252528;
+  --color-ring: #593ff8;
+  --color-sidebar: #121214;
   --color-sidebar-foreground: #d4d4d8;
-  --color-sidebar-border: #1e1e24;
-  --color-surface: #111114;
-  --color-glow: #8b5cf6;
+  --color-sidebar-border: rgba(133, 78, 254, 0.1);
+  --color-surface: #18181c;
+  --color-glow: #593ff8;
+  --color-brand: #593ff8;
+  --color-brand-light: #854efe;
 
   --radius-lg: 0.75rem;
   --radius-md: 0.5rem;
@@ -122,17 +124,17 @@ body {
 
 /* Selection */
 ::selection {
-  background: rgba(139, 92, 246, 0.3);
+  background: rgba(89, 63, 248, 0.35);
   color: #fafafa;
 }
 
-/* Noise texture overlay */
+/* Noise texture overlay (subtle; Grainient already adds grain on marketing pages) */
 .noise-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.015;
+  opacity: 0.012;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 256px 256px;
@@ -140,38 +142,90 @@ body {
 
 /* Glass effect utilities */
 .glass {
-  background: rgba(24, 24, 27, 0.6);
+  background: rgba(20, 20, 20, 0.5);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(63, 63, 70, 0.3);
+  border: 1px solid rgba(133, 78, 254, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .glass-strong {
-  background: rgba(24, 24, 27, 0.85);
+  background: rgba(20, 20, 20, 0.72);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  border: 1px solid rgba(63, 63, 70, 0.4);
+  border: 1px solid rgba(133, 78, 254, 0.18);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-/* Gradient text */
+.glass-on-gradient {
+  background: rgba(20, 20, 20, 0.42);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(133, 78, 254, 0.14);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.glass-nav {
+  background: rgba(20, 20, 20, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(133, 78, 254, 0.1);
+}
+
+/* Gradient text — matches Grainient palette */
 .gradient-text {
-  background: linear-gradient(135deg, #a78bfa 0%, #818cf8 50%, #6366f1 100%);
+  background: linear-gradient(135deg, #854efe 0%, #593ff8 45%, #b794ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Abstract background shapes */
-.abstract-gradient-1 {
-  background: radial-gradient(ellipse at 20% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+.btn-brand {
+  background: linear-gradient(135deg, #593ff8 0%, #854efe 100%);
+  box-shadow:
+    0 4px 24px rgba(89, 63, 248, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-.abstract-gradient-2 {
-  background: radial-gradient(ellipse at 80% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+.btn-brand:hover {
+  box-shadow:
+    0 8px 32px rgba(89, 63, 248, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.abstract-gradient-3 {
-  background: radial-gradient(ellipse at 50% 80%, rgba(167, 139, 250, 0.08) 0%, transparent 50%);
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(133, 78, 254, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.btn-ghost:hover {
+  background: rgba(133, 78, 254, 0.1);
+  border-color: rgba(133, 78, 254, 0.25);
+}
+
+.badge-brand {
+  background: rgba(89, 63, 248, 0.15);
+  border: 1px solid rgba(133, 78, 254, 0.25);
+  color: #c4b5fd;
+}
+
+/* Marketing page shell over animated background */
+.page-marketing {
+  background: transparent;
+}
+
+.section-fade-top {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(20, 20, 20, 0.4) 100%
+  );
 }
 
 /* Prism code theme overrides */

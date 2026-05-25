@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import { headers } from "next/headers";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
+import { getSiteUrl } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -19,16 +20,6 @@ const siteTitle = "Stickify | Your Knowledge Board";
 const siteDescription =
   "Save, organize, and revisit everything that matters. A structured personal knowledge board for mixed content.";
 
-function metadataBaseUrl(): URL {
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    return new URL(process.env.NEXT_PUBLIC_SITE_URL);
-  }
-  if (process.env.VERCEL_URL) {
-    return new URL(`https://${process.env.VERCEL_URL}`);
-  }
-  return new URL("http://localhost:3000");
-}
-
 export async function generateMetadata(): Promise<Metadata> {
   // Scrapers need absolute URLs. Using request headers avoids cases where
   // build-time env vars are missing (which can accidentally point to localhost).
@@ -37,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const proto = h.get("x-forwarded-proto") ?? "https";
   const metadataBase = host
     ? new URL(`${proto}://${host}`)
-    : metadataBaseUrl();
+    : getSiteUrl();
   const previewImageUrl = new URL("/web-preview.jpg", metadataBase).toString();
 
   return {
