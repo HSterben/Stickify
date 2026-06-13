@@ -104,7 +104,7 @@ export function BoardView({
             <p className="mt-1 text-sm text-zinc-500">
               {posts.length} {posts.length === 1 ? "post" : "posts"}
               {readOnly && ownerName && (
-                <span> · Shared by {ownerName}</span>
+                <span> · by {ownerName}</span>
               )}
             </p>
           </div>
@@ -228,15 +228,15 @@ export function BoardView({
             {filterType !== "all" || filterTag
               ? "No posts match your filters"
               : readOnly
-                ? "This board is empty"
-                : "This board is empty"}
+                ? "Nothing here yet"
+                : "Add your first post"}
           </p>
           <p className="text-xs text-zinc-600">
             {filterType !== "all" || filterTag
-              ? "Try adjusting your filters"
+              ? "Clear your filters and try again"
               : readOnly
-                ? "Nothing has been shared yet"
-                : "Add your first post to get started"}
+                ? "The owner hasn't added anything"
+                : "Hit Add Post above"}
           </p>
         </motion.div>
       ) : (

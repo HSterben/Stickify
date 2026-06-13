@@ -29,7 +29,7 @@ export async function generateMetadata({
 
   return {
     title: `${category.name} | Stickify`,
-    description: `View the shared board "${category.name}" on Stickify.`,
+    description: `Shared board: ${category.name}`,
     robots: { index: false, follow: false },
   };
 }

@@ -18,7 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 const siteTitle = "Stickify | Your Knowledge Board";
 const siteDescription =
-  "Save, organize, and revisit everything that matters. A structured personal knowledge board for mixed content.";
+  "Save notes, code snippets, and links on boards. Private by default. Share when you want.";
 
 export async function generateMetadata(): Promise<Metadata> {
   // Scrapers need absolute URLs. Using request headers avoids cases where
@@ -40,6 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "notes",
       "bookmarks",
       "code snippets",
+      "boards",
       "organizer",
     ],
     openGraph: {

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { StickifyGrainient } from "@/components/ui/stickify-grainient";
+import { CreatorCredit } from "@/components/ui/creator-credit";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -69,10 +70,10 @@ export default function LoginPage() {
             <Layers className="h-7 w-7 text-white" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-white">
-            Welcome to Stickify
+            Sign in to Stickify
           </h1>
           <p className="mt-2 text-sm text-zinc-300/80">
-            Sign in to access your personal knowledge boards
+            See your boards and saved stuff
           </p>
         </div>
 
@@ -103,10 +104,14 @@ export default function LoginPage() {
           </button>
 
           <p className="mt-4 text-center text-xs text-zinc-400">
-            Your data is private and only accessible to you
+            Your boards are private unless you share them
           </p>
         </div>
       </motion.div>
+
+      <p className="absolute bottom-6 left-0 right-0 z-10 text-center text-xs text-zinc-500/80">
+        <CreatorCredit />
+      </p>
     </div>
   );
 }

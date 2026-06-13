@@ -176,25 +176,25 @@ body {
   border: 1px solid rgba(133, 78, 254, 0.1);
 }
 
-/* Gradient text — matches Grainient palette */
+/* Gradient text — restrained violet */
 .gradient-text {
-  background: linear-gradient(135deg, #854efe 0%, #593ff8 45%, #b794ff 100%);
+  background: linear-gradient(135deg, #a78bfa 0%, #8b7cf8 50%, #c4b5fd 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .btn-brand {
-  background: linear-gradient(135deg, #593ff8 0%, #854efe 100%);
+  background: linear-gradient(135deg, #4f46b8 0%, #6d5ce8 100%);
   box-shadow:
-    0 4px 24px rgba(89, 63, 248, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 4px 20px rgba(79, 70, 184, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .btn-brand:hover {
   box-shadow:
-    0 8px 32px rgba(89, 63, 248, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 6px 28px rgba(79, 70, 184, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .btn-ghost {
@@ -221,11 +221,45 @@ body {
 }
 
 .section-fade-top {
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(20, 20, 20, 0.4) 100%
-  );
+  position: relative;
+  isolation: isolate;
+}
+
+.section-fade-top::before {
+  content: "";
+  position: absolute;
+  top: -3rem;
+  right: 0.75rem;
+  bottom: 0;
+  left: 0.75rem;
+  z-index: -1;
+  border-radius: 2.5rem;
+  background:
+    radial-gradient(
+      ellipse 90% 55% at 50% 0%,
+      rgba(20, 20, 20, 0.42) 0%,
+      rgba(20, 20, 20, 0.18) 42%,
+      transparent 72%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(20, 20, 20, 0.06) 18%,
+      rgba(20, 20, 20, 0.14) 38%,
+      rgba(20, 20, 20, 0.24) 58%,
+      rgba(20, 20, 20, 0.34) 78%,
+      rgba(20, 20, 20, 0.4) 100%
+    );
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .section-fade-top::before {
+    top: -4rem;
+    right: 1.5rem;
+    left: 1.5rem;
+    border-radius: 3rem;
+  }
 }
 
 /* Prism code theme overrides */

@@ -8,6 +8,7 @@ import { Category, Profile } from "@/lib/types/database";
 import { createClient } from "@/lib/supabase/client";
 import { slugify, cn } from "@/lib/utils";
 import { getBoardVisibility } from "@/lib/sharing";
+import { CreatorCredit } from "@/components/ui/creator-credit";
 import { toast } from "sonner";
 import {
   Layers,
@@ -311,6 +312,12 @@ export function Sidebar({
             </button>
           </div>
         )}
+      </div>
+
+      <div className="shrink-0 border-t border-sidebar-border px-5 py-4">
+        <p className="text-center text-[11px] text-zinc-600">
+          Stickify <CreatorCredit className="text-zinc-600" />
+        </p>
       </div>
     </div>
   );

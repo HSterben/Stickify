@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Layers } from "lucide-react";
+import { CreatorCredit } from "@/components/ui/creator-credit";
 
 export const metadata: Metadata = {
   robots: {
@@ -25,13 +26,15 @@ export default function PublicBoardLayout({
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 shadow-md shadow-violet-500/20">
               <Layers className="h-4 w-4 text-white" />
             </div>
-            <span className="text-sm font-bold tracking-tight">Stickify</span>
+            <span className="text-sm font-bold tracking-tight">
+              Stickify <CreatorCredit className="text-[11px] font-normal text-zinc-500" />
+            </span>
           </Link>
           <Link
             href="/login"
             className="rounded-lg bg-violet-600 px-3.5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-violet-500"
           >
-            Get started
+            Sign up
           </Link>
         </div>
       </header>

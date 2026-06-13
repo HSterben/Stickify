@@ -11,16 +11,9 @@ import {
 } from "@/lib/sharing";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Share2,
-  Globe,
-  Lock,
-  Copy,
-  Check,
-  X,
-  Link2,
-} from "lucide-react";
+import { Share2, Globe, Lock, Copy, Check, X, Link2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Switch } from "@/components/ui/switch";
 
 interface BoardSharePanelProps {
   category: Category;
@@ -37,15 +30,16 @@ export function BoardSharePanel({
   const supabase = createClient();
   const isPublic = isBoardPublic(getBoardVisibility(category));
 
-  const handleToggleVisibility = async () => {
+  const handleVisibilityChange = async (makePublic: boolean) => {
+    if (makePublic === isPublic || saving) return;
+
     setSaving(true);
-    const nextVisibility = isPublic ? "private" : "public";
     const shareId = category.share_id ?? generateShareId();
 
     const { data, error } = await (supabase as any)
       .from("categories")
       .update({
-        visibility: nextVisibility,
+        visibility: makePublic ? "public" : "private",
         share_id: shareId,
       })
       .eq("id", category.id)
@@ -55,16 +49,12 @@ export function BoardSharePanel({
     setSaving(false);
 
     if (error) {
-      toast.error("Failed to update sharing settings");
+      toast.error("Could not update board");
       return;
     }
 
     onCategoryUpdated(data as Category);
-    toast.success(
-      nextVisibility === "public"
-        ? "Board is now public — anyone with the link can view"
-        : "Board is now private"
-    );
+    toast.success(makePublic ? "Board is public now" : "Board is private now");
   };
 
   const handleCopyLink = async () => {
@@ -73,10 +63,10 @@ export function BoardSharePanel({
     try {
       await navigator.clipboard.writeText(getBoardShareUrl(category.share_id));
       setCopied(true);
-      toast.success("Link copied to clipboard");
+      toast.success("Link copied");
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error("Failed to copy link");
+      toast.error("Could not copy link");
     }
   };
 
@@ -118,7 +108,7 @@ export function BoardSharePanel({
               <div className="flex items-center justify-between border-b border-zinc-800 px-4 py-3">
                 <div className="flex items-center gap-2">
                   <Share2 className="h-4 w-4 text-violet-400" />
-                  <span className="text-sm font-medium">Share board</span>
+                  <span className="text-sm font-medium">Share this board</span>
                 </div>
                 <button
                   onClick={() => setOpen(false)}
@@ -131,8 +121,8 @@ export function BoardSharePanel({
 
               <div className="space-y-4 p-4">
                 <p className="text-xs leading-relaxed text-zinc-500">
-                  Private boards are only visible to you. Make this board public
-                  to share it with anyone via a link — like a YouTube playlist.
+                  Private means only you see it. Public means anyone with the
+                  link can view it. Like sharing a YouTube playlist.
                 </p>
 
                 <div className="flex items-center justify-between rounded-lg bg-zinc-800/50 px-3 py-2.5">
@@ -153,31 +143,18 @@ export function BoardSharePanel({
                       </p>
                     </div>
                   </div>
-                  <button
-                    onClick={handleToggleVisibility}
+                  <Switch
+                    checked={isPublic}
                     disabled={saving}
-                    className={cn(
-                      "relative h-6 w-11 shrink-0 rounded-full transition-colors",
-                      isPublic ? "bg-emerald-500" : "bg-zinc-700",
-                      saving && "opacity-60"
-                    )}
-                    role="switch"
-                    aria-checked={isPublic}
+                    onCheckedChange={handleVisibilityChange}
                     aria-label={isPublic ? "Make private" : "Make public"}
-                  >
-                    <span
-                      className={cn(
-                        "absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform",
-                        isPublic ? "translate-x-5" : "translate-x-0.5"
-                      )}
-                    />
-                  </button>
+                  />
                 </div>
 
                 {isPublic && category.share_id && (
                   <div className="space-y-2">
                     <label className="text-[11px] font-medium uppercase tracking-wider text-zinc-500">
-                      Share link
+                      Link
                     </label>
                     <div className="flex items-center gap-2">
                       <div className="flex min-w-0 flex-1 items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2">

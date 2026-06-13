@@ -109,7 +109,7 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search across all boards..."
+                placeholder="Search your boards..."
                 className="flex-1 bg-transparent py-4 text-sm text-white placeholder-zinc-500 outline-none"
                 autoFocus
               />

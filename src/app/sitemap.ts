@@ -9,6 +9,7 @@ const publicRoutes: {
 }[] = [
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/login", changeFrequency: "monthly", priority: 0.5 },
+  { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

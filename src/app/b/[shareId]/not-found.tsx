@@ -11,7 +11,7 @@ export default function PublicBoardNotFound() {
         Board not found
       </h1>
       <p className="mb-8 max-w-sm text-sm text-zinc-500">
-        This board may be private, deleted, or the link may be incorrect.
+        Board is private, deleted, or the link is wrong.
       </p>
       <Link
         href="/"
