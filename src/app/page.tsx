@@ -5,71 +5,16 @@ import Link from "next/link";
 import {
   Layers,
   Code2,
-  Link2,
   FileText,
   Sparkles,
-  Search,
-  Tags,
   ArrowRight,
   Shield,
   Globe,
-  Share2,
 } from "lucide-react";
 import { StickifyGrainient } from "@/components/ui/stickify-grainient";
 import { CreatorCredit } from "@/components/ui/creator-credit";
-import { blurReveal, blurRevealStagger, scrollViewport } from "@/lib/motion";
-
-const features = [
-  {
-    icon: FileText,
-    title: "Notes",
-    description: "Write stuff down. Keep it on a board.",
-    accent: "text-rose-300/90",
-    iconBg: "bg-rose-500/10 ring-rose-500/15",
-  },
-  {
-    icon: Code2,
-    title: "Code",
-    description: "Save snippets. Copy them with one click.",
-    accent: "text-emerald-300/90",
-    iconBg: "bg-emerald-500/10 ring-emerald-500/15",
-  },
-  {
-    icon: Link2,
-    title: "Links",
-    description: "Paste a URL. You get a preview card.",
-    accent: "text-sky-300/90",
-    iconBg: "bg-sky-500/10 ring-sky-500/15",
-  },
-  {
-    icon: Layers,
-    title: "Boards",
-    description: "Put your stuff in boards so it's not all over the place.",
-    accent: "text-violet-300/90",
-    iconBg: "bg-violet-500/10 ring-violet-500/15",
-  },
-  {
-    icon: Tags,
-    title: "Tags",
-    description: "Tag posts. Filter by tag when you need to.",
-    accent: "text-amber-300/90",
-    iconBg: "bg-amber-500/10 ring-amber-500/15",
-  },
-  {
-    icon: Search,
-    title: "Search",
-    description: "Search all your boards at once.",
-    accent: "text-indigo-300/90",
-    iconBg: "bg-indigo-500/10 ring-indigo-500/15",
-  },
-  {
-    icon: Share2,
-    title: "Share",
-    description: "Make a board public and send the link to anyone.",
-    accent: "text-teal-300/90",
-    iconBg: "bg-teal-500/10 ring-teal-500/15",
-  },
-];
+import { FeaturesScrollSection } from "@/components/landing/features-scroll-section";
+import { blurRevealStagger, scrollViewport } from "@/lib/motion";
 
 export default function LandingPage() {
   return (
@@ -112,7 +57,7 @@ export default function LandingPage() {
               variants={blurRevealStagger(0.08)}
               className="mx-auto max-w-4xl text-5xl leading-[1.1] font-extrabold tracking-tight md:text-7xl"
             >
-              Notes, code, and links.{" "}
+              Digital sticky notes.{" "}
               <span className="gradient-text">On boards.</span>
             </motion.h1>
 
@@ -240,52 +185,7 @@ export default function LandingPage() {
           </motion.div>
         </section>
 
-        <section
-          id="features"
-          className="section-fade-top relative mx-auto mt-20 max-w-6xl px-6 pt-20 pb-32 md:mt-28 md:pt-24"
-        >
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={scrollViewport}
-            variants={blurReveal}
-            className="mb-16 text-center"
-          >
-            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-              What it does
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-zinc-400">
-              Notes, code, links, boards, tags, search, and share.
-            </p>
-          </motion.div>
-
-          <div className="grid gap-6 sm:grid-cols-2 sm:gap-7 lg:grid-cols-3 lg:gap-8">
-            {features.map((feature, i) => (
-              <motion.article
-                key={feature.title}
-                initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
-                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{
-                  delay: i * 0.07,
-                  duration: 0.8,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="glass-on-gradient rounded-2xl border-zinc-800/80 p-6 transition-colors hover:border-zinc-700"
-              >
-                <div
-                  className={`mb-4 inline-flex rounded-xl p-3 ring-1 ring-inset ${feature.iconBg}`}
-                >
-                  <feature.icon className={`h-5 w-5 ${feature.accent}`} />
-                </div>
-                <h3 className="mb-2 text-lg font-semibold">{feature.title}</h3>
-                <p className="text-sm leading-relaxed text-zinc-400">
-                  {feature.description}
-                </p>
-              </motion.article>
-            ))}
-          </div>
-        </section>
+        <FeaturesScrollSection />
 
         <section className="mx-auto mt-16 max-w-4xl px-6 pb-32 md:mt-24">
           <motion.div
@@ -376,8 +276,14 @@ export default function LandingPage() {
           </motion.div>
         </section>
 
-        <footer className="glass-on-gradient mx-6 mt-auto rounded-2xl border-t-0 px-6 py-8 text-center text-xs text-zinc-400 md:mx-12">
-          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+        <motion.footer
+          initial={{ opacity: 0, y: 72 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.35, margin: "0px 0px -40px 0px" }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="glass-on-gradient mt-auto w-screen border-t border-zinc-800/60 px-6 py-10 text-center text-xs text-zinc-400"
+        >
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-2 gap-y-1">
             <div className="flex items-center gap-2">
               <Layers className="h-4 w-4" />
               <span>Stickify</span>
@@ -389,7 +295,7 @@ export default function LandingPage() {
               Privacy Policy
             </Link>
           </p>
-        </footer>
+        </motion.footer>
       </main>
     </div>
   );

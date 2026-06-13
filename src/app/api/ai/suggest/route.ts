@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getOpenRouterModel } from "@/lib/ai-config";
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest) {
       apiKey,
     });
 
-    const model = process.env.AI_MODEL || "google/gemini-2.0-flash-001";
+    const model = getOpenRouterModel();
 
     const prompt = `Analyze this content and suggest:
 1. Up to 5 relevant tags (lowercase, single words or hyphenated)

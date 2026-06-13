@@ -220,48 +220,6 @@ body {
   background: transparent;
 }
 
-.section-fade-top {
-  position: relative;
-  isolation: isolate;
-}
-
-.section-fade-top::before {
-  content: "";
-  position: absolute;
-  top: -3rem;
-  right: 0.75rem;
-  bottom: 0;
-  left: 0.75rem;
-  z-index: -1;
-  border-radius: 2.5rem;
-  background:
-    radial-gradient(
-      ellipse 90% 55% at 50% 0%,
-      rgba(20, 20, 20, 0.42) 0%,
-      rgba(20, 20, 20, 0.18) 42%,
-      transparent 72%
-    ),
-    linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(20, 20, 20, 0.06) 18%,
-      rgba(20, 20, 20, 0.14) 38%,
-      rgba(20, 20, 20, 0.24) 58%,
-      rgba(20, 20, 20, 0.34) 78%,
-      rgba(20, 20, 20, 0.4) 100%
-    );
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  .section-fade-top::before {
-    top: -4rem;
-    right: 1.5rem;
-    left: 1.5rem;
-    border-radius: 3rem;
-  }
-}
-
 /* Prism code theme overrides */
 pre[class*="language-"] {
   background: #111114 !important;
