@@ -6,6 +6,8 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
+export type BoardVisibility = "private" | "public";
+
 export interface Database {
   public: {
     Tables: {
@@ -17,6 +19,8 @@ export interface Database {
           slug: string;
           icon: string | null;
           position: number;
+          visibility: BoardVisibility;
+          share_id: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -27,6 +31,8 @@ export interface Database {
           slug: string;
           icon?: string | null;
           position?: number;
+          visibility?: BoardVisibility;
+          share_id?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -37,6 +43,8 @@ export interface Database {
           slug?: string;
           icon?: string | null;
           position?: number;
+          visibility?: BoardVisibility;
+          share_id?: string | null;
           created_at?: string;
           updated_at?: string;
         };

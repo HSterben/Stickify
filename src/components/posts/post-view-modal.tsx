@@ -22,6 +22,7 @@ import { cn, getDomain, getRelativeTime } from "@/lib/utils";
 interface PostViewModalProps {
   open: boolean;
   post: PostWithTags | null;
+  readOnly?: boolean;
   onClose: () => void;
   onEdit: (post: PostWithTags) => void;
 }
@@ -32,7 +33,7 @@ const typeConfig = {
   link: { icon: Globe, color: "text-sky-400", bg: "bg-sky-500/10" },
 };
 
-export function PostViewModal({ open, post, onClose, onEdit }: PostViewModalProps) {
+export function PostViewModal({ open, post, readOnly = false, onClose, onEdit }: PostViewModalProps) {
   const codeRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -89,17 +90,19 @@ export function PostViewModal({ open, post, onClose, onEdit }: PostViewModalProp
                 </h2>
               </div>
               <div className="flex shrink-0 items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    onEdit(post);
-                    onClose();
-                  }}
-                  className="flex h-9 items-center gap-2 rounded-lg bg-violet-600/90 px-3 text-sm font-medium text-white shadow-lg shadow-violet-500/15 transition-colors hover:bg-violet-500"
-                >
-                  <Pencil className="h-4 w-4" />
-                  Edit
-                </button>
+                {!readOnly && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onEdit(post);
+                      onClose();
+                    }}
+                    className="flex h-9 items-center gap-2 rounded-lg bg-violet-600/90 px-3 text-sm font-medium text-white shadow-lg shadow-violet-500/15 transition-colors hover:bg-violet-500"
+                  >
+                    <Pencil className="h-4 w-4" />
+                    Edit
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={onClose}

@@ -36,6 +36,7 @@ import Image from "next/image";
 
 interface PostCardProps {
   post: PostWithTags;
+  readOnly?: boolean;
   onEdit: () => void;
   onOpen: () => void;
   onDeleted: (id: string) => void;
@@ -48,7 +49,7 @@ const typeConfig = {
   link: { icon: Globe, color: "text-sky-400", bg: "bg-sky-500/10", border: "border-sky-500/10" },
 };
 
-export function PostCard({ post, onEdit, onOpen, onDeleted, onUpdated }: PostCardProps) {
+export function PostCard({ post, readOnly = false, onEdit, onOpen, onDeleted, onUpdated }: PostCardProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuPlacement, setMenuPlacement] = useState<{ top: number; left: number } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -296,6 +297,7 @@ export function PostCard({ post, onEdit, onOpen, onDeleted, onUpdated }: PostCar
             {getRelativeTime(post.created_at)}
           </span>
 
+          {!readOnly && (
           <div ref={menuAnchorRef} className="relative z-[90]">
             <button
               type="button"
@@ -401,6 +403,7 @@ export function PostCard({ post, onEdit, onOpen, onDeleted, onUpdated }: PostCar
                 document.body
               )}
           </div>
+          )}
         </div>
       </div>
     </div>

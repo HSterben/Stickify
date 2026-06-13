@@ -6,6 +6,7 @@ import { PostCard } from "./post-card";
 import { CreatePostModal } from "@/components/posts/create-post-modal";
 import { EditPostModal } from "@/components/posts/edit-post-modal";
 import { PostViewModal } from "@/components/posts/post-view-modal";
+import { BoardSharePanel } from "./board-share-panel";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus,
@@ -20,12 +21,20 @@ import {
 interface BoardViewProps {
   category: Category;
   initialPosts: PostWithTags[];
+  readOnly?: boolean;
+  ownerName?: string | null;
 }
 
 type FilterType = "all" | "text" | "code" | "link";
 type SortBy = "newest" | "oldest";
 
-export function BoardView({ category, initialPosts }: BoardViewProps) {
+export function BoardView({
+  category: initialCategory,
+  initialPosts,
+  readOnly = false,
+  ownerName,
+}: BoardViewProps) {
+  const [category, setCategory] = useState(initialCategory);
   const [posts, setPosts] = useState<PostWithTags[]>(initialPosts);
   const [createOpen, setCreateOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<PostWithTags | null>(null);
@@ -94,6 +103,9 @@ export function BoardView({ category, initialPosts }: BoardViewProps) {
             <h1 className="text-2xl font-bold tracking-tight">{category.name}</h1>
             <p className="mt-1 text-sm text-zinc-500">
               {posts.length} {posts.length === 1 ? "post" : "posts"}
+              {readOnly && ownerName && (
+                <span> · Shared by {ownerName}</span>
+              )}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -108,13 +120,21 @@ export function BoardView({ category, initialPosts }: BoardViewProps) {
               <Filter className="h-4 w-4" />
               <span className="hidden sm:inline">Filter</span>
             </button>
-            <button
-              onClick={() => setCreateOpen(true)}
-              className="flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-violet-500/20 transition-all hover:bg-violet-500 hover:shadow-violet-500/30 active:scale-[0.97]"
-            >
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">Add Post</span>
-            </button>
+            {!readOnly && (
+              <>
+                <BoardSharePanel
+                  category={category}
+                  onCategoryUpdated={setCategory}
+                />
+                <button
+                  onClick={() => setCreateOpen(true)}
+                  className="flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-violet-500/20 transition-all hover:bg-violet-500 hover:shadow-violet-500/30 active:scale-[0.97]"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span className="hidden sm:inline">Add Post</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -129,7 +149,6 @@ export function BoardView({ category, initialPosts }: BoardViewProps) {
               className="overflow-hidden"
             >
               <div className="mt-4 flex flex-wrap items-center gap-2">
-                {/* Type filters */}
                 {filterButtons.map((fb) => (
                   <button
                     key={fb.type}
@@ -147,7 +166,6 @@ export function BoardView({ category, initialPosts }: BoardViewProps) {
 
                 <div className="mx-1 h-5 w-px bg-zinc-800" />
 
-                {/* Sort */}
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortBy)}
@@ -157,7 +175,6 @@ export function BoardView({ category, initialPosts }: BoardViewProps) {
                   <option value="oldest">Oldest first</option>
                 </select>
 
-                {/* Tag filter */}
                 {allTags.length > 0 && (
                   <>
                     <div className="mx-1 h-5 w-px bg-zinc-800" />
@@ -210,12 +227,16 @@ export function BoardView({ category, initialPosts }: BoardViewProps) {
           <p className="mb-1 text-sm font-medium text-zinc-400">
             {filterType !== "all" || filterTag
               ? "No posts match your filters"
-              : "This board is empty"}
+              : readOnly
+                ? "This board is empty"
+                : "This board is empty"}
           </p>
           <p className="text-xs text-zinc-600">
             {filterType !== "all" || filterTag
               ? "Try adjusting your filters"
-              : "Add your first post to get started"}
+              : readOnly
+                ? "Nothing has been shared yet"
+                : "Add your first post to get started"}
           </p>
         </motion.div>
       ) : (
@@ -233,6 +254,7 @@ export function BoardView({ category, initialPosts }: BoardViewProps) {
               >
                 <PostCard
                   post={post}
+                  readOnly={readOnly}
                   onOpen={() => setViewingPost(post)}
                   onEdit={() => setEditingPost(post)}
                   onDeleted={handlePostDeleted}
@@ -244,16 +266,19 @@ export function BoardView({ category, initialPosts }: BoardViewProps) {
         </div>
       )}
 
-      <CreatePostModal
-        open={createOpen}
-        onClose={() => setCreateOpen(false)}
-        categoryId={category.id}
-        onCreated={handlePostCreated}
-      />
+      {!readOnly && (
+        <CreatePostModal
+          open={createOpen}
+          onClose={() => setCreateOpen(false)}
+          categoryId={category.id}
+          onCreated={handlePostCreated}
+        />
+      )}
 
       <PostViewModal
         open={!!viewingPost}
         post={viewingPost}
+        readOnly={readOnly}
         onClose={() => setViewingPost(null)}
         onEdit={(p) => {
           setViewingPost(null);
@@ -261,7 +286,7 @@ export function BoardView({ category, initialPosts }: BoardViewProps) {
         }}
       />
 
-      {editingPost && (
+      {!readOnly && editingPost && (
         <EditPostModal
           key={editingPost.id}
           open={!!editingPost}

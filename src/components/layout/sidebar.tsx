@@ -7,6 +7,7 @@ import { User } from "@supabase/supabase-js";
 import { Category, Profile } from "@/lib/types/database";
 import { createClient } from "@/lib/supabase/client";
 import { slugify, cn } from "@/lib/utils";
+import { getBoardVisibility } from "@/lib/sharing";
 import { toast } from "sonner";
 import {
   Layers,
@@ -18,6 +19,7 @@ import {
   Hash,
   X,
   Check,
+  Globe,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -221,6 +223,9 @@ export function Sidebar({
                 >
                   <Hash className={cn("h-4 w-4 shrink-0", isActive ? "text-violet-400" : "text-zinc-600")} />
                   <span className="truncate">{cat.name}</span>
+                  {getBoardVisibility(cat) === "public" && (
+                    <Globe className="h-3 w-3 shrink-0 text-emerald-500/80" aria-label="Public" />
+                  )}
 
                   {/* Context menu trigger */}
                   <div
