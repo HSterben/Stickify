@@ -82,18 +82,7 @@ export function DashboardShell({
       <div className="flex flex-1 flex-col overflow-hidden">
         <Topbar user={user} profile={profile} />
         <main className="flex-1 overflow-y-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={typeof window !== "undefined" ? window.location.pathname : ""}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="h-full"
-            >
-              {children}
-            </motion.div>
-          </AnimatePresence>
+          <div className="h-full">{children}</div>
         </main>
       </div>
     </div>

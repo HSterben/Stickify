@@ -21,6 +21,7 @@ import {
   X,
   Check,
   Globe,
+  Archive,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -210,11 +211,9 @@ export function Sidebar({
                   </button>
                 </div>
               ) : (
-                <button
-                  onClick={() => {
-                    router.push(`/dashboard/${cat.slug}`);
-                    onClose();
-                  }}
+                <Link
+                  href={`/dashboard/${cat.slug}`}
+                  onClick={() => onClose()}
                   className={cn(
                     "flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm transition-all",
                     isActive
@@ -231,6 +230,7 @@ export function Sidebar({
                   {/* Context menu trigger */}
                   <div
                     onClick={(e) => {
+                      e.preventDefault();
                       e.stopPropagation();
                       setMenuOpenId(menuOpenId === cat.id ? null : cat.id);
                     }}
@@ -238,7 +238,7 @@ export function Sidebar({
                   >
                     <MoreHorizontal className="h-3.5 w-3.5" />
                   </div>
-                </button>
+                </Link>
               )}
 
               {/* Dropdown menu */}
@@ -312,6 +312,22 @@ export function Sidebar({
             </button>
           </div>
         )}
+      </div>
+
+      <div className="shrink-0 px-3 pb-3">
+        <Link
+          href="/dashboard/archived"
+          onClick={() => onClose()}
+          className={cn(
+            "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors",
+            pathname === "/dashboard/archived"
+              ? "bg-violet-500/10 text-violet-300"
+              : "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200"
+          )}
+        >
+          <Archive className="h-4 w-4 shrink-0" />
+          Archived
+        </Link>
       </div>
 
       <div className="shrink-0 border-t border-sidebar-border px-5 py-4">

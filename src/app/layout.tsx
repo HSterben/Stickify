@@ -62,13 +62,10 @@ export async function generateMetadata(): Promise<Metadata> {
       description: siteDescription,
       images: [previewImageUrl],
     },
-    icons: {
-      icon: [
-        { url: "/favicon.ico", type: "image/x-icon" },
-        { url: "/icon.png", type: "image/png", sizes: "256x256" },
-      ],
-      shortcut: { url: "/favicon.ico", type: "image/x-icon" },
-      apple: { url: "/icon.png", type: "image/png", sizes: "256x256" },
+    appleWebApp: {
+      capable: true,
+      title: "Stickify",
+      statusBarStyle: "black-translucent",
     },
     verification: {
       google: "QhMBV989EY0RI4qnyU82UIeTLWdq5BiyhBlmWVRzMpM",

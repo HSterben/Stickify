@@ -31,7 +31,7 @@ export default async function BoardPage({ params }: BoardPageProps) {
     .select("*")
     .eq("category_id", category.id)
     .eq("is_archived", false)
-    .order("is_pinned", { ascending: false })
+    .order("position", { ascending: true, nullsFirst: false })
     .order("created_at", { ascending: false });
 
   const posts = (postsData ?? []) as Post[];

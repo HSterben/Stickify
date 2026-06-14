@@ -17,6 +17,7 @@ import {
   Pencil,
   Trash2,
   Archive,
+  ArchiveRestore,
   Copy,
   Check,
   ExternalLink,
@@ -37,9 +38,12 @@ import Image from "next/image";
 interface PostCardProps {
   post: PostWithTags;
   readOnly?: boolean;
+  archived?: boolean;
+  boardName?: string;
   onEdit: () => void;
   onOpen: () => void;
   onDeleted: (id: string) => void;
+  onRestored?: (id: string) => void;
   onUpdated: (post: PostWithTags) => void;
 }
 
@@ -49,7 +53,17 @@ const typeConfig = {
   link: { icon: Globe, color: "text-sky-400", bg: "bg-sky-500/10", border: "border-sky-500/10" },
 };
 
-export function PostCard({ post, readOnly = false, onEdit, onOpen, onDeleted, onUpdated }: PostCardProps) {
+export function PostCard({
+  post,
+  readOnly = false,
+  archived = false,
+  boardName,
+  onEdit,
+  onOpen,
+  onDeleted,
+  onRestored,
+  onUpdated,
+}: PostCardProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuPlacement, setMenuPlacement] = useState<{ top: number; left: number } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -133,6 +147,18 @@ export function PostCard({ post, readOnly = false, onEdit, onOpen, onDeleted, on
     }
   };
 
+  const handleRestore = async () => {
+    const { error } = await (supabase as any)
+      .from("posts")
+      .update({ is_archived: false })
+      .eq("id", post.id);
+
+    if (!error) {
+      onRestored?.(post.id);
+      toast.success("Post restored");
+    }
+  };
+
   const handleDelete = async () => {
     const { error } = await (supabase as any).from("posts").delete().eq("id", post.id);
     if (!error) {
@@ -199,6 +225,12 @@ export function PostCard({ post, readOnly = false, onEdit, onOpen, onDeleted, on
           </div>
           <h3 className="flex-1 text-sm font-semibold leading-snug">{post.title}</h3>
         </div>
+
+        {archived && boardName && (
+          <p className="mb-2 text-[10px] font-medium uppercase tracking-wider text-zinc-600">
+            {boardName}
+          </p>
+        )}
 
         {/* Content body */}
         {post.type === "text" && post.content_text?.trim() && (
@@ -361,31 +393,48 @@ export function PostCard({ post, readOnly = false, onEdit, onOpen, onDeleted, on
                     >
                       <Pencil className="h-3.5 w-3.5" /> Edit
                     </button>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePin();
-                        setMenuOpen(false);
-                      }}
-                      className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-zinc-300 hover:bg-zinc-800"
-                    >
-                      {post.is_pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
-                      {post.is_pinned ? "Unpin" : "Pin to top"}
-                    </button>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleArchive();
-                        setMenuOpen(false);
-                      }}
-                      className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-zinc-300 hover:bg-zinc-800"
-                    >
-                      <Archive className="h-3.5 w-3.5" /> Archive
-                    </button>
+                    {archived ? (
+                      <button
+                        type="button"
+                        role="menuitem"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRestore();
+                          setMenuOpen(false);
+                        }}
+                        className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-zinc-300 hover:bg-zinc-800"
+                      >
+                        <ArchiveRestore className="h-3.5 w-3.5" /> Restore
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handlePin();
+                            setMenuOpen(false);
+                          }}
+                          className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-zinc-300 hover:bg-zinc-800"
+                        >
+                          {post.is_pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
+                          {post.is_pinned ? "Unpin" : "Pin to top"}
+                        </button>
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleArchive();
+                            setMenuOpen(false);
+                          }}
+                          className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-zinc-300 hover:bg-zinc-800"
+                        >
+                          <Archive className="h-3.5 w-3.5" /> Archive
+                        </button>
+                      </>
+                    )}
                     <button
                       type="button"
                       role="menuitem"

@@ -7,7 +7,7 @@ import { CODE_LANGUAGES } from "@/lib/utils";
 import { AccentColorPicker } from "./accent-color-picker";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Loader2, Save } from "lucide-react";
+import { X, Loader2, Save, Sparkles } from "lucide-react";
 import { TagInput } from "./tag-input";
 import { MarkdownContent } from "./markdown-content";
 
@@ -27,8 +27,41 @@ export function EditPostModal({ open, onClose, post, onUpdated }: EditPostModalP
   const [color, setColor] = useState<string | null>(post.color);
   const [tags, setTags] = useState<string[]>(post.tags.map((t) => t.name));
   const [loading, setLoading] = useState(false);
+  const [rewriting, setRewriting] = useState(false);
 
   const supabase = createClient();
+
+  const handleRewrite = async () => {
+    if (!contentText.trim()) {
+      toast.error("Add some note content first");
+      return;
+    }
+
+    setRewriting(true);
+
+    try {
+      const res = await fetch("/api/ai/rewrite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: contentText }),
+      });
+
+      if (!res.ok) {
+        toast.error("AI rewrite failed");
+        return;
+      }
+
+      const data = (await res.json()) as { content?: string };
+      if (data.content) {
+        setContentText(data.content);
+        toast.success("Note improved with AI");
+      }
+    } catch {
+      toast.error("AI rewrite failed");
+    } finally {
+      setRewriting(false);
+    }
+  };
 
   const handleSubmit = async () => {
     if (!title.trim()) {
@@ -156,6 +189,21 @@ export function EditPostModal({ open, onClose, post, onUpdated }: EditPostModalP
                       </p>
                       <MarkdownContent content={contentText} showEmptyHint={false} />
                     </div>
+                  ) : null}
+                  {contentText.trim() ? (
+                    <button
+                      type="button"
+                      onClick={handleRewrite}
+                      disabled={rewriting}
+                      className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-700/80 bg-zinc-800/40 px-4 py-2 text-sm font-medium text-zinc-300 transition-colors hover:bg-zinc-800/70 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {rewriting ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Sparkles className="h-4 w-4 text-violet-300" />
+                      )}
+                      Improve with AI
+                    </button>
                   ) : null}
                 </div>
               )}

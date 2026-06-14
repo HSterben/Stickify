@@ -220,6 +220,24 @@ body {
   background: transparent;
 }
 
+.layout-edit-card {
+  position: relative;
+  cursor: grab;
+  transform: scale(1);
+  transition: transform 0.2s ease;
+}
+
+.layout-edit-card:hover {
+  transform: scale(1.03);
+  z-index: 10;
+}
+
+.layout-edit-card.layout-edit-dragging {
+  transform: scale(1.03);
+  z-index: 20;
+  cursor: grabbing;
+}
+
 /* Prism code theme overrides */
 pre[class*="language-"] {
   background: #111114 !important;

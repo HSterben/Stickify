@@ -68,6 +68,7 @@ export interface Database {
           color: string | null;
           is_pinned: boolean;
           is_archived: boolean;
+          position: number | null;
           created_at: string;
           updated_at: string;
         };
@@ -89,6 +90,7 @@ export interface Database {
           color?: string | null;
           is_pinned?: boolean;
           is_archived?: boolean;
+          position?: number | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -110,6 +112,7 @@ export interface Database {
           color?: string | null;
           is_pinned?: boolean;
           is_archived?: boolean;
+          position?: number | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -196,4 +199,9 @@ export type TagPartial = {
 
 export type PostWithTags = Post & {
   tags: TagPartial[];
+};
+
+export type PostWithTagsAndBoard = PostWithTags & {
+  category_name: string;
+  category_slug: string;
 };
