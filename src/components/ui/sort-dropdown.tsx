@@ -101,7 +101,7 @@ export function SortDropdown<T extends string>({
               top: placement.top,
               left: placement.left,
               minWidth: placement.minWidth,
-              zIndex: 250,
+              zIndex: 30,
             }}
             className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 py-1 shadow-xl ring-1 ring-black/20"
           >

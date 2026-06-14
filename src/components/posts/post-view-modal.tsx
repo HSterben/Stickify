@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { PostWithTags } from "@/lib/types/database";
 import { MarkdownContent } from "./markdown-content";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,6 +19,7 @@ import "prismjs/components/prism-sql";
 import "prismjs/components/prism-go";
 import "prismjs/components/prism-rust";
 import { cn, getDomain, getRelativeTime } from "@/lib/utils";
+import { MODAL_BACKDROP, MODAL_MAX_HEIGHT_LG, MODAL_ROOT } from "@/lib/modal-classes";
 
 interface PostViewModalProps {
   open: boolean;
@@ -49,16 +51,18 @@ export function PostViewModal({ open, post, readOnly = false, onClose, onEdit }:
     ? { borderColor: `${post.color}44`, backgroundColor: `${post.color}0d` }
     : {};
 
-  return (
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className={MODAL_ROOT}>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className={MODAL_BACKDROP}
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
@@ -67,51 +71,74 @@ export function PostViewModal({ open, post, readOnly = false, onClose, onEdit }:
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             style={cardStyle}
             className={cn(
-              "relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-900 shadow-2xl",
+              `relative w-full max-w-2xl overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-900 shadow-2xl ${MODAL_MAX_HEIGHT_LG}`,
               post.color && "border-opacity-80"
             )}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-zinc-800 bg-zinc-900/95 px-6 py-4 backdrop-blur-sm">
-              <div className="min-w-0 flex-1">
-                <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <div className={cn("flex h-7 w-7 items-center justify-center rounded-lg", config.bg)}>
-                    <config.icon className={cn("h-4 w-4", config.color)} />
+            <div className="sticky top-0 z-10 border-b border-zinc-800 bg-zinc-900/95 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0 flex-1">
+                  <div className="mb-2 flex flex-wrap items-center gap-2">
+                    <div className={cn("flex h-7 w-7 items-center justify-center rounded-lg", config.bg)}>
+                      <config.icon className={cn("h-4 w-4", config.color)} />
+                    </div>
+                    {post.is_pinned && (
+                      <span className="rounded-md bg-violet-500/15 px-2 py-0.5 text-[10px] font-medium text-violet-300">
+                        Pinned
+                      </span>
+                    )}
+                    <span className="text-[10px] text-zinc-600">{getRelativeTime(post.created_at)}</span>
                   </div>
-                  {post.is_pinned && (
-                    <span className="rounded-md bg-violet-500/15 px-2 py-0.5 text-[10px] font-medium text-violet-300">
-                      Pinned
-                    </span>
-                  )}
-                  <span className="text-[10px] text-zinc-600">{getRelativeTime(post.created_at)}</span>
+                  <h2 className="text-xl font-semibold leading-snug tracking-tight text-zinc-50">
+                    {post.title}
+                  </h2>
                 </div>
-                <h2 className="text-xl font-semibold leading-snug tracking-tight text-zinc-50">
-                  {post.title}
-                </h2>
-              </div>
-              <div className="flex shrink-0 items-center gap-2">
-                {!readOnly && (
+                <div className="hidden shrink-0 items-center gap-2 sm:flex">
+                  {!readOnly && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onEdit(post);
+                        onClose();
+                      }}
+                      className="flex h-9 items-center gap-2 rounded-lg bg-violet-600/90 px-3 text-sm font-medium text-white shadow-lg shadow-violet-500/15 transition-colors hover:bg-violet-500"
+                    >
+                      <Pencil className="h-4 w-4" />
+                      Edit
+                    </button>
+                  )}
                   <button
                     type="button"
-                    onClick={() => {
-                      onEdit(post);
-                      onClose();
-                    }}
-                    className="flex h-9 items-center gap-2 rounded-lg bg-violet-600/90 px-3 text-sm font-medium text-white shadow-lg shadow-violet-500/15 transition-colors hover:bg-violet-500"
+                    onClick={onClose}
+                    className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-zinc-800 hover:text-white"
+                    aria-label="Close"
                   >
-                    <Pencil className="h-4 w-4" />
-                    Edit
+                    <X className="h-5 w-5" />
                   </button>
-                )}
+                </div>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-zinc-800 hover:text-white"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-zinc-800 hover:text-white sm:hidden"
                   aria-label="Close"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
+              {!readOnly && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onEdit(post);
+                    onClose();
+                  }}
+                  className="mt-3 flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-violet-600/90 text-sm font-medium text-white shadow-lg shadow-violet-500/15 transition-colors hover:bg-violet-500 sm:hidden"
+                >
+                  <Pencil className="h-4 w-4" />
+                  Edit post
+                </button>
+              )}
             </div>
 
             <div className="space-y-4 px-6 py-5">
@@ -193,6 +220,7 @@ export function PostViewModal({ open, post, readOnly = false, onClose, onEdit }:
           </motion.div>
         </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

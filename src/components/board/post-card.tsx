@@ -330,7 +330,7 @@ export function PostCard({
           </span>
 
           {!readOnly && (
-          <div ref={menuAnchorRef} className="relative z-[90]">
+          <div ref={menuAnchorRef} className="relative z-10">
             <button
               type="button"
               onClick={(e) => {
@@ -352,7 +352,7 @@ export function PostCard({
               createPortal(
                 <>
                   <div
-                    className="fixed inset-0 z-[200]"
+                    className="fixed inset-0 z-30"
                     onClick={(e) => {
                       e.stopPropagation();
                       setMenuOpen(false);
@@ -368,13 +368,13 @@ export function PostCard({
                             position: "fixed",
                             top: menuPlacement.top,
                             left: menuPlacement.left,
-                            zIndex: 210,
+                            zIndex: 30,
                           }
                         : {
                             position: "fixed",
                             top: 0,
                             left: 0,
-                            zIndex: 210,
+                            zIndex: 30,
                             visibility: "hidden",
                             pointerEvents: "none",
                           }

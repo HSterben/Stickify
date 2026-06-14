@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { headers } from "next/headers";
 import { Toaster } from "sonner";
@@ -19,6 +19,12 @@ const jetbrainsMono = JetBrains_Mono({
 const siteTitle = "Stickify | Your Knowledge Board";
 const siteDescription =
   "Save notes, code snippets, and links on boards. Private by default. Share when you want.";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   // Scrapers need absolute URLs. Using request headers avoids cases where

@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { createClient } from "@/lib/supabase/client";
 import { PostWithTags } from "@/lib/types/database";
 import { CODE_LANGUAGES } from "@/lib/utils";
+import { MODAL_BACKDROP, MODAL_MAX_HEIGHT, MODAL_ROOT } from "@/lib/modal-classes";
 import type { AiCategoryOption, AiSuggestResponse, PostContentType } from "@/lib/ai-config";
 import { AccentColorPicker } from "./accent-color-picker";
 import { toast } from "sonner";
@@ -332,23 +334,25 @@ export function CreatePostModal({
   const selectedBoardName = categories.find((c) => c.id === selectedCategoryId)?.name;
   const hasSuggestableContent = Boolean(getContentForSuggest());
 
-  return (
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className={MODAL_ROOT}>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className={MODAL_BACKDROP}
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-900 shadow-2xl"
+            className={`relative w-full max-w-lg overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-900 shadow-2xl ${MODAL_MAX_HEIGHT}`}
           >
             <div className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-800 bg-zinc-900 px-6 py-4">
               <h2 className="text-lg font-semibold">New Post</h2>
@@ -573,6 +577,7 @@ export function CreatePostModal({
           </motion.div>
         </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
