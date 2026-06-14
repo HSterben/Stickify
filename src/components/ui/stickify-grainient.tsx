@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Grainient from "@/components/ui/grainient";
 
 const STICKIFY_GRAINIENT_PROPS = {
@@ -28,9 +29,20 @@ const STICKIFY_GRAINIENT_PROPS = {
 } as const;
 
 export function StickifyGrainient({ className }: { className?: string }) {
+  const [isMobile, setIsMobile] = useState(true);
+
+  useEffect(() => {
+    setIsMobile(!window.matchMedia("(min-width: 768px)").matches);
+  }, []);
+
   return (
     <div className={className}>
-      <Grainient {...STICKIFY_GRAINIENT_PROPS} />
+      <Grainient
+        {...STICKIFY_GRAINIENT_PROPS}
+        maxDpr={isMobile ? 1 : 2}
+        deferInit={isMobile}
+        targetFps={isMobile ? 30 : 60}
+      />
       {/* Vignette + readability without flattening the gradient */}
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,transparent_0%,rgba(20,20,20,0.55)_100%)]"
