@@ -12,11 +12,7 @@ import {
   Share2,
   type LucideIcon,
 } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { blurReveal, scrollViewport } from "@/lib/motion";
-
-gsap.registerPlugin(ScrollTrigger);
 
 type Feature = {
   icon: LucideIcon;
@@ -106,13 +102,23 @@ export function FeaturesScrollSection() {
 
     if (!section || !pin || !track) return;
 
-    const mm = gsap.matchMedia();
+    const media = window.matchMedia("(min-width: 768px)");
+    if (!media.matches) return;
 
-    mm.add("(min-width: 768px)", () => {
+    let tween: { kill: () => void; scrollTrigger?: { kill: () => void } } | null = null;
+
+    const setup = async () => {
+      const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+      ]);
+
+      gsap.registerPlugin(ScrollTrigger);
+
       const getScrollDistance = () =>
         Math.max(track.scrollWidth - window.innerWidth, 0);
 
-      const tween = gsap.to(track, {
+      tween = gsap.to(track, {
         x: () => -getScrollDistance(),
         ease: "none",
         scrollTrigger: {
@@ -125,14 +131,14 @@ export function FeaturesScrollSection() {
           anticipatePin: 1,
         },
       });
+    };
 
-      return () => {
-        tween.scrollTrigger?.kill();
-        tween.kill();
-      };
-    });
+    void setup();
 
-    return () => mm.revert();
+    return () => {
+      tween?.scrollTrigger?.kill();
+      tween?.kill();
+    };
   }, []);
 
   return (
@@ -176,34 +182,20 @@ export function FeaturesScrollSection() {
       </div>
 
       <div className="px-6 pt-20 pb-8 md:hidden">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={scrollViewport}
-          variants={blurReveal}
-          className="mb-10 text-center"
-        >
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+        <div className="mb-10 text-center">
+          <h2 className="text-3xl font-bold tracking-tight">
             What it does
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-zinc-400">
             Notes, code, links, boards, tags, search, and share.
           </p>
-        </motion.div>
+        </div>
       </div>
 
       <div className="grid gap-6 px-6 pb-32 sm:grid-cols-2 sm:gap-7 md:hidden">
-        {features.map((feature, i) => (
-          <motion.article
+        {features.map((feature) => (
+          <article
             key={feature.title}
-            initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{
-              delay: i * 0.07,
-              duration: 0.8,
-              ease: [0.16, 1, 0.3, 1],
-            }}
             className="glass-on-gradient rounded-2xl border-zinc-800/80 p-6"
           >
             <div
@@ -215,7 +207,7 @@ export function FeaturesScrollSection() {
             <p className="text-sm leading-relaxed text-zinc-400">
               {feature.description}
             </p>
-          </motion.article>
+          </article>
         ))}
       </div>
     </section>

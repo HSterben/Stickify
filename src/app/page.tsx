@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -11,15 +12,22 @@ import {
   Shield,
   Globe,
 } from "lucide-react";
-import { StickifyGrainient } from "@/components/ui/stickify-grainient";
+import { LandingBackground } from "@/components/landing/landing-background";
 import { CreatorCredit } from "@/components/ui/creator-credit";
 import { FeaturesScrollSection } from "@/components/landing/features-scroll-section";
-import { blurRevealStagger, scrollViewport } from "@/lib/motion";
+import { blurRevealStagger, lightRevealStagger, scrollViewport } from "@/lib/motion";
 
 export default function LandingPage() {
+  const [useRichMotion, setUseRichMotion] = useState(false);
+
+  useEffect(() => {
+    setUseRichMotion(window.matchMedia("(min-width: 768px)").matches);
+  }, []);
+
+  const reveal = useRichMotion ? blurRevealStagger : lightRevealStagger;
   return (
-    <div className="page-marketing relative flex min-h-screen flex-col overflow-x-hidden">
-      <StickifyGrainient className="pointer-events-none fixed inset-0 z-0" />
+    <div className="page-marketing relative overflow-x-clip">
+      <LandingBackground />
 
       <nav className="relative z-10 mx-auto flex w-full max-w-6xl shrink-0 items-center justify-between px-6 py-5 md:px-12">
         <Link href="/" className="flex items-center gap-2.5">
@@ -37,7 +45,7 @@ export default function LandingPage() {
         </Link>
       </nav>
 
-      <main className="relative z-10 flex flex-1 flex-col">
+      <main className="relative z-10">
         <section className="mx-auto max-w-5xl px-6 pt-20 pb-32 text-center md:pt-32 md:pb-40">
           <motion.div
             initial="hidden"
@@ -46,7 +54,7 @@ export default function LandingPage() {
               visible: { transition: { staggerChildren: 0.14 } },
             }}
           >
-            <motion.div variants={blurRevealStagger(0)} className="mb-8 flex flex-col items-center gap-3">
+            <motion.div variants={reveal(0)} className="mb-8 flex flex-col items-center gap-3">
               <span className="h-px w-12 bg-gradient-to-r from-transparent via-violet-400/50 to-transparent" />
               <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-zinc-500">
                 Notes · Code · Links
@@ -54,7 +62,7 @@ export default function LandingPage() {
             </motion.div>
 
             <motion.h1
-              variants={blurRevealStagger(0.08)}
+              variants={reveal(0.08)}
               className="mx-auto max-w-4xl text-5xl leading-[1.1] font-extrabold tracking-tight md:text-7xl"
             >
               Digital sticky notes.{" "}
@@ -62,7 +70,7 @@ export default function LandingPage() {
             </motion.h1>
 
             <motion.p
-              variants={blurRevealStagger(0.16)}
+              variants={reveal(0.16)}
               className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-300/90 md:text-xl"
             >
               Save things so you can find them later. No mess. No digging through
@@ -70,7 +78,7 @@ export default function LandingPage() {
             </motion.p>
 
             <motion.div
-              variants={blurRevealStagger(0.24)}
+              variants={reveal(0.24)}
               className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
             >
               <Link
@@ -90,8 +98,8 @@ export default function LandingPage() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 56, filter: "blur(16px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 56 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
             className="relative mx-auto mt-20 max-w-4xl"
           >
@@ -193,11 +201,10 @@ export default function LandingPage() {
             whileInView="visible"
             viewport={scrollViewport}
             variants={{
-              hidden: { opacity: 0, y: 40, filter: "blur(14px)" },
+              hidden: { opacity: 0, y: 40 },
               visible: {
                 opacity: 1,
                 y: 0,
-                filter: "blur(0px)",
                 transition: { duration: 0.95, ease: [0.16, 1, 0.3, 1] },
               },
             }}
@@ -229,8 +236,8 @@ export default function LandingPage() {
                 ].map((item, i) => (
                   <motion.div
                     key={item}
-                    initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-                    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.1 + i * 0.08, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                     className="flex items-center gap-3 rounded-xl border border-zinc-800 bg-zinc-900/40 px-4 py-3 text-sm text-zinc-300"
@@ -250,11 +257,10 @@ export default function LandingPage() {
             whileInView="visible"
             viewport={scrollViewport}
             variants={{
-              hidden: { opacity: 0, y: 40, filter: "blur(14px)" },
+              hidden: { opacity: 0, y: 40 },
               visible: {
                 opacity: 1,
                 y: 0,
-                filter: "blur(0px)",
                 transition: { duration: 0.95, ease: [0.16, 1, 0.3, 1] },
               },
             }}
@@ -276,13 +282,7 @@ export default function LandingPage() {
           </motion.div>
         </section>
 
-        <motion.footer
-          initial={{ opacity: 0, y: 72 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.35, margin: "0px 0px -40px 0px" }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="glass-on-gradient mt-auto w-screen border-t border-zinc-800/60 px-6 py-10 text-center text-xs text-zinc-400"
-        >
+        <footer className="glass-on-gradient relative z-10 w-full border-t border-zinc-800/60 px-6 py-10 text-center text-xs text-zinc-400">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-2 gap-y-1">
             <div className="flex items-center gap-2">
               <Layers className="h-4 w-4" />
@@ -295,7 +295,7 @@ export default function LandingPage() {
               Privacy Policy
             </Link>
           </p>
-        </motion.footer>
+        </footer>
       </main>
     </div>
   );

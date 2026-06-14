@@ -42,3 +42,19 @@ export const scrollViewport = {
   margin: "-80px" as const,
   amount: 0.25 as const,
 };
+
+export const lightRevealStagger = (delay = 0): Variants => ({
+  hidden: {
+    opacity: 0,
+    y: 24,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay,
+      duration: 0.55,
+      ease: smoothEase,
+    },
+  },
+});
