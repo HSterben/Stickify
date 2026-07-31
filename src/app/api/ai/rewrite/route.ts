@@ -40,7 +40,7 @@ ${content.slice(0, 4000)}
     const { text } = await generateText({
       model: openrouter(model),
       prompt,
-      maxTokens: 1200,
+      maxOutputTokens: 1200,
     });
 
     const cleaned = text

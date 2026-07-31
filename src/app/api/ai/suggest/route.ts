@@ -56,7 +56,7 @@ Respond in JSON format only:
     const { text } = await generateText({
       model: openrouter(model),
       prompt,
-      maxTokens: 250,
+      maxOutputTokens: 250,
     });
 
     const cleaned = text.replace(/```json\n?|```\n?/g, "").trim();
