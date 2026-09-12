@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Layers, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { StickifyLogo } from "@/components/brand/stickify-logo";
 import { CreatorCredit } from "@/components/ui/creator-credit";
 
 export const metadata: Metadata = {
@@ -18,9 +19,8 @@ export default function PrivacyPage() {
             <ArrowLeft className="h-4 w-4" />
             Back
           </Link>
-          <Link href="/" className="flex items-center gap-2">
-            <Layers className="h-4 w-4 text-violet-400" />
-            <span className="text-sm font-semibold">Stickify</span>
+          <Link href="/" className="transition-opacity hover:opacity-90">
+            <StickifyLogo size="sm" />
           </Link>
         </div>
       </header>
@@ -34,7 +34,7 @@ export default function PrivacyPage() {
             <h2 className="mb-3 text-lg font-semibold text-white">What we collect</h2>
             <p>
               When you sign in with Google, we store your account info (email, name,
-              profile picture) so you can use Stickify. Your boards and posts are
+              and profile picture) so you can use Stickify. Your boards and posts are
               stored in our database and tied to your account.
             </p>
           </section>
@@ -48,12 +48,12 @@ export default function PrivacyPage() {
             </p>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-zinc-400">
               <li>
-                <strong className="text-zinc-300">Sign-in cookies</strong> — When you
+                <strong className="text-zinc-300">Sign-in cookies:</strong> When you
                 log in, Supabase sets session cookies so you stay signed in. These are
                 required for the app to work. They are not used for ads or tracking.
               </li>
               <li>
-                <strong className="text-zinc-300">Analytics</strong> — We use Vercel
+                <strong className="text-zinc-300">Analytics:</strong> We use Vercel
                 Web Analytics on the site. It is cookieless and does not collect
                 personal data.
               </li>
@@ -72,8 +72,8 @@ export default function PrivacyPage() {
             <h2 className="mb-3 text-lg font-semibold text-white">Third parties</h2>
             <p>
               Sign-in is handled by Google (OAuth) and Supabase (hosting and database).
-              Link previews may fetch metadata from URLs you save. AI tag suggestions
-              are optional and only run when you create a post.
+              Link previews may fetch metadata from URLs you save. Optional AI
+              rewrite can improve a draft when you choose Improve with AI.
             </p>
           </section>
 

@@ -1,12 +1,18 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { User } from "@supabase/supabase-js";
 import { Category, Profile } from "@/lib/types/database";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import {
+  loadSidebarWidth,
+  saveSidebarWidth,
+  SIDEBAR_WIDTH_MAX,
+  SIDEBAR_WIDTH_MIN,
+} from "@/lib/note-content";
 
 interface DashboardShellProps {
   user: User;
@@ -23,6 +29,12 @@ export function DashboardShell({
 }: DashboardShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>(initialCategories);
+  const [sidebarWidth, setSidebarWidth] = useState(256);
+  const dragging = useRef(false);
+
+  useEffect(() => {
+    setSidebarWidth(loadSidebarWidth());
+  }, []);
 
   const handleCategoryCreated = useCallback((cat: Category) => {
     setCategories((prev) => [...prev, cat]);
@@ -38,17 +50,42 @@ export function DashboardShell({
     );
   }, []);
 
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      if (!dragging.current) return;
+      const next = Math.min(
+        SIDEBAR_WIDTH_MAX,
+        Math.max(SIDEBAR_WIDTH_MIN, e.clientX)
+      );
+      setSidebarWidth(next);
+    };
+    const onUp = () => {
+      if (!dragging.current) return;
+      dragging.current = false;
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+      setSidebarWidth((w) => {
+        saveSidebarWidth(w);
+        return w;
+      });
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+  }, []);
+
   return (
     <div className="flex h-screen overflow-hidden bg-background">
-      {/* Mobile sidebar toggle */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-4 left-4 z-50 flex h-10 w-10 items-center justify-center rounded-xl bg-card/80 backdrop-blur-sm border border-zinc-800/50 lg:hidden"
+        className="fixed top-4 left-4 z-50 flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-800/50 bg-card/80 backdrop-blur-sm lg:hidden"
       >
         {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
 
-      {/* Mobile sidebar overlay */}
       <AnimatePresence>
         {sidebarOpen && (
           <motion.div
@@ -61,9 +98,9 @@ export function DashboardShell({
         )}
       </AnimatePresence>
 
-      {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-out lg:relative lg:translate-x-0 ${
+        style={{ width: sidebarWidth }}
+        className={`fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 ease-out lg:relative lg:translate-x-0 lg:transition-none ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -76,10 +113,20 @@ export function DashboardShell({
           onCategoryUpdated={handleCategoryUpdated}
           onClose={() => setSidebarOpen(false)}
         />
+        <div
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="Resize sidebar"
+          onMouseDown={() => {
+            dragging.current = true;
+            document.body.style.cursor = "col-resize";
+            document.body.style.userSelect = "none";
+          }}
+          className="absolute top-0 right-0 hidden h-full w-1 cursor-col-resize bg-transparent transition-colors hover:bg-violet-500/40 lg:block"
+        />
       </aside>
 
-      {/* Main content area */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <Topbar user={user} profile={profile} />
         <main className="flex-1 overflow-y-auto">
           <div className="h-full">{children}</div>

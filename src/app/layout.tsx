@@ -16,9 +16,9 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
-const siteTitle = "Stickify | Your Knowledge Board";
+const siteTitle = "Stickify | Notes, Code, and Links on Boards";
 const siteDescription =
-  "Save notes, code snippets, and links on boards. Private by default. Share when you want.";
+  "Save notes, code snippets, and links on boards. Boards stay private until you share them.";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -67,6 +67,14 @@ export async function generateMetadata(): Promise<Metadata> {
       title: siteTitle,
       description: siteDescription,
       images: [previewImageUrl],
+    },
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/favicon.svg", type: "image/svg+xml" },
+        { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      ],
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
     },
     appleWebApp: {
       capable: true,

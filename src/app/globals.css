@@ -246,7 +246,7 @@ body {
   cursor: grabbing;
 }
 
-/* Prism code theme overrides */
+/* Code block theme (language-* classes from markdown / editor) */
 pre[class*="language-"] {
   background: #111114 !important;
   border-radius: 0.5rem;
@@ -269,3 +269,151 @@ code[class*="language-"] {
 .token.class-name { color: #fbbf24; }
 .token.property { color: #67e8f9; }
 .token.boolean { color: #f97316; }
+
+/* TipTap / note content */
+.note-editor .ProseMirror {
+  min-height: 8rem;
+}
+.note-editor .ProseMirror p.is-editor-empty:first-child::before,
+.note-editor .ProseMirror p.has-focus.is-empty::before,
+.note-editor .ProseMirror .is-empty.has-focus::before,
+.note-editor .ProseMirror p.is-empty::before {
+  color: #52525b;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+.note-editor .ProseMirror p { margin: 0 0 0.65em; }
+.note-editor .ProseMirror h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #f4f4f5;
+  margin: 0.85em 0 0.4em;
+}
+.note-editor .ProseMirror h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e4e4e7;
+  margin: 0.75em 0 0.35em;
+}
+.note-editor .ProseMirror ul,
+.note-editor .ProseMirror ol {
+  padding-left: 1.25rem;
+  margin: 0 0 0.65em;
+}
+.note-editor .ProseMirror ul[data-type="taskList"],
+.note-content ul[data-type="taskList"],
+.note-task-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.25rem 0 0.75rem;
+}
+.note-editor .ProseMirror ul[data-type="taskList"] li,
+.note-content ul[data-type="taskList"] li,
+.note-task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0.2rem 0;
+}
+.note-editor .ProseMirror ul[data-type="taskList"] li > label,
+.note-content ul[data-type="taskList"] li > label {
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+.note-editor .ProseMirror ul[data-type="taskList"] li > div,
+.note-content ul[data-type="taskList"] li > div {
+  flex: 1;
+  min-width: 0;
+}
+.note-editor .ProseMirror ul[data-type="taskList"] input[type="checkbox"],
+.note-content ul[data-type="taskList"] input[type="checkbox"] {
+  width: 0.95rem;
+  height: 0.95rem;
+  accent-color: #7c3aed;
+  cursor: pointer;
+}
+.note-content-interactive ul[data-type="taskList"] input[type="checkbox"] {
+  pointer-events: auto;
+  cursor: pointer;
+}
+.note-content-interactive ul[data-type="taskList"] li > label {
+  pointer-events: none;
+}
+.note-content-interactive ul[data-type="taskList"] li > label input[type="checkbox"] {
+  pointer-events: auto;
+}
+.note-content-interactive ul[data-type="taskList"] li > div {
+  pointer-events: none;
+}
+.note-editor .ProseMirror mark,
+.note-content mark {
+  background: rgba(250, 204, 21, 0.25);
+  color: #fef9c3;
+  border-radius: 0.15rem;
+  padding: 0 0.15rem;
+}
+.note-editor .ProseMirror pre,
+.note-content pre {
+  background: #111114;
+  border: 1px solid #27272a;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  overflow-x: auto;
+  font-size: 0.75rem;
+  margin: 0.5rem 0 0.75rem;
+}
+.note-editor .ProseMirror code,
+.note-content code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+.note-editor .ProseMirror :not(pre) > code,
+.note-content :not(pre) > code {
+  background: rgba(39, 39, 42, 0.9);
+  color: #6ee7b7;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+}
+.note-editor .ProseMirror img,
+.note-content img,
+.note-image {
+  max-width: 100%;
+  max-height: 18rem;
+  border-radius: 0.5rem;
+  border: 1px solid #27272a;
+  margin: 0.5rem 0;
+  object-fit: contain;
+}
+.note-content-compact img {
+  max-height: 8rem;
+}
+.note-content a {
+  color: #a78bfa;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.note-content p {
+  margin: 0 0 0.5em;
+}
+.note-content p:last-child {
+  margin-bottom: 0;
+}
+.note-content h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f4f4f5;
+  margin: 0.5em 0 0.35em;
+}
+.note-content h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e4e4e7;
+  margin: 0.45em 0 0.3em;
+}
+.note-content ul:not([data-type="taskList"]),
+.note-content ol {
+  padding-left: 1.15rem;
+  margin: 0.25rem 0 0.5rem;
+}

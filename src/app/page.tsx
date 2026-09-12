@@ -3,18 +3,12 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import {
-  Layers,
-  Code2,
-  FileText,
-  Sparkles,
-  ArrowRight,
-  Shield,
-  Globe,
-} from "lucide-react";
+import { Sparkles, ArrowRight, Shield } from "lucide-react";
+import { StickifyLogo } from "@/components/brand/stickify-logo";
 import { LandingBackground } from "@/components/landing/landing-background";
+import { HeroProductShot } from "@/components/landing/hero-product-shot";
+import { FeaturesLineSection } from "@/components/landing/features-line-section";
 import { CreatorCredit } from "@/components/ui/creator-credit";
-import { FeaturesScrollSection } from "@/components/landing/features-scroll-section";
 import { blurRevealStagger, lightRevealStagger, scrollViewport } from "@/lib/motion";
 
 export default function LandingPage() {
@@ -30,11 +24,8 @@ export default function LandingPage() {
       <LandingBackground />
 
       <nav className="relative z-10 mx-auto flex w-full max-w-6xl shrink-0 items-center justify-between px-6 py-5 md:px-12">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="btn-brand flex h-9 w-9 items-center justify-center rounded-xl">
-            <Layers className="h-5 w-5 text-white" />
-          </div>
-          <span className="text-xl font-bold tracking-tight text-white">Stickify</span>
+        <Link href="/" className="transition-opacity hover:opacity-90">
+          <StickifyLogo size="lg" wordmarkClassName="text-white" priority />
         </Link>
         <Link
           href="/login"
@@ -46,7 +37,7 @@ export default function LandingPage() {
       </nav>
 
       <main className="relative z-10">
-        <section className="mx-auto max-w-5xl px-6 pt-20 pb-32 text-center md:pt-32 md:pb-40">
+        <section className="mx-auto max-w-6xl px-4 pt-20 pb-16 text-center sm:px-6 md:pt-28 md:pb-20">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -56,8 +47,8 @@ export default function LandingPage() {
           >
             <motion.div variants={reveal(0)} className="mb-8 flex flex-col items-center gap-3">
               <span className="h-px w-12 bg-gradient-to-r from-transparent via-violet-400/50 to-transparent" />
-              <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-zinc-500">
-                Notes · Code · Links
+              <p className="text-sm font-medium tracking-wide text-zinc-300 md:text-base">
+                Notes app, but better.
               </p>
             </motion.div>
 
@@ -65,16 +56,15 @@ export default function LandingPage() {
               variants={reveal(0.08)}
               className="mx-auto max-w-4xl text-5xl leading-[1.1] font-extrabold tracking-tight md:text-7xl"
             >
-              Digital sticky notes.{" "}
-              <span className="gradient-text">On boards.</span>
+              Digital Sticky Notes
             </motion.h1>
 
             <motion.p
               variants={reveal(0.16)}
               className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-300/90 md:text-xl"
             >
-              Save things so you can find them later. No mess. No digging through
-              random tabs.
+              Keep what you save in one place so you can find it later. No pile of
+              stray tabs to dig through.
             </motion.p>
 
             <motion.div
@@ -85,115 +75,22 @@ export default function LandingPage() {
                 href="/login"
                 className="btn-brand group inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-white transition-all hover:brightness-110"
               >
-                Start free
+                Create a free account
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <a
                 href="#features"
                 className="btn-ghost inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-medium text-zinc-300 transition-colors hover:text-white"
               >
-                See what it does
+                Browse features
               </a>
             </motion.div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 56 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative mx-auto mt-20 max-w-4xl"
-          >
-            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-brand/30 via-brand-light/20 to-brand/10 blur-2xl" />
-            <div className="glass-strong relative overflow-hidden rounded-2xl p-1">
-              <div className="rounded-xl bg-surface p-6">
-                <div className="flex gap-4">
-                  <div className="hidden w-40 shrink-0 rounded-lg bg-background/50 p-3 md:block">
-                    <div className="mb-3 h-2 w-16 rounded bg-zinc-700/80" />
-                    {["Frontend", "Backend", "Design", "Ideas"].map((cat, i) => (
-                      <div
-                        key={cat}
-                        className={`mb-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium ${
-                          i === 0
-                            ? "bg-violet-500/10 text-violet-300"
-                            : "text-zinc-500"
-                        }`}
-                      >
-                        {cat}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex-1">
-                    <div className="mb-4 flex items-center gap-2">
-                      <div className="h-2 w-24 rounded bg-zinc-700" />
-                      <div className="ml-auto h-6 w-6 rounded-md bg-zinc-800" />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5">
-                      <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-3">
-                        <div className="mb-2 flex items-center gap-1.5">
-                          <FileText className="h-3 w-3 text-rose-400/80" />
-                          <div className="h-1.5 w-14 rounded bg-zinc-700" />
-                        </div>
-                        <div className="space-y-1">
-                          <div className="h-1 w-full rounded bg-zinc-700/50" />
-                          <div className="h-1 w-3/4 rounded bg-zinc-700/50" />
-                          <div className="h-1 w-1/2 rounded bg-zinc-700/50" />
-                        </div>
-                      </div>
-                      <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-3">
-                        <div className="mb-2 flex items-center gap-1.5">
-                          <Code2 className="h-3 w-3 text-emerald-400/80" />
-                          <div className="h-1.5 w-16 rounded bg-zinc-700" />
-                        </div>
-                        <div className="space-y-1 font-mono">
-                          <div className="h-1 w-full rounded bg-zinc-700/50" />
-                          <div className="h-1 w-4/5 rounded bg-zinc-700/50" />
-                          <div className="h-1 w-3/5 rounded bg-zinc-700/50" />
-                          <div className="h-1 w-full rounded bg-zinc-700/50" />
-                        </div>
-                      </div>
-                      <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-3">
-                        <div className="mb-2 h-12 w-full rounded bg-zinc-800/80" />
-                        <div className="flex items-center gap-1.5">
-                          <Globe className="h-3 w-3 text-sky-400/80" />
-                          <div className="h-1.5 w-16 rounded bg-zinc-700" />
-                        </div>
-                        <div className="mt-1 h-1 w-full rounded bg-zinc-700/50" />
-                      </div>
-                      <div className="hidden rounded-lg border border-zinc-800 bg-zinc-900/50 p-3 sm:block">
-                        <div className="mb-2 flex items-center gap-1.5">
-                          <FileText className="h-3 w-3 text-violet-400/80" />
-                          <div className="h-1.5 w-12 rounded bg-zinc-700" />
-                        </div>
-                        <div className="space-y-1">
-                          <div className="h-1 w-full rounded bg-zinc-700/50" />
-                          <div className="h-1 w-2/3 rounded bg-zinc-700/50" />
-                        </div>
-                      </div>
-                      <div className="hidden rounded-lg border border-zinc-800 bg-zinc-900/50 p-3 sm:block">
-                        <div className="mb-2 flex items-center gap-1.5">
-                          <Code2 className="h-3 w-3 text-amber-400/80" />
-                          <div className="h-1.5 w-14 rounded bg-zinc-700" />
-                        </div>
-                        <div className="space-y-1">
-                          <div className="h-1 w-full rounded bg-zinc-700/50" />
-                          <div className="h-1 w-3/4 rounded bg-zinc-700/50" />
-                          <div className="h-1 w-1/2 rounded bg-zinc-700/50" />
-                        </div>
-                      </div>
-                      <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-3">
-                        <div className="flex h-full items-center justify-center">
-                          <div className="text-xs text-zinc-500">+ Add post</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          <HeroProductShot />
         </section>
 
-        <FeaturesScrollSection />
+        <FeaturesLineSection />
 
         <section className="mx-auto mt-16 max-w-4xl px-6 pb-32 md:mt-24">
           <motion.div
@@ -219,20 +116,20 @@ export default function LandingPage() {
                 </span>
               </div>
               <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
-                It can suggest tags.
+                AI can rewrite for you.
                 <br />
-                You still pick.
+                You still decide.
               </h2>
               <p className="mb-8 max-w-lg text-zinc-400">
-                When you add a post, AI can guess tags or whether it&apos;s
-                text, code, or a link. You can ignore it.
+                Improve with AI can tighten or rephrase a draft while you edit.
+                Keep what you like and skip it anytime.
               </p>
               <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
                 {[
-                  "Suggests tags",
-                  "Guesses if it's code or text",
-                  "Picks a board for you",
-                  "Finds similar posts",
+                  "Rewrites your draft",
+                  "Cleans up structure",
+                  "Keeps the same meaning",
+                  "Optional, use when you want",
                 ].map((item, i) => (
                   <motion.div
                     key={item}
@@ -267,16 +164,16 @@ export default function LandingPage() {
           >
             <div className="mb-4 inline-flex items-center gap-2 text-sm text-zinc-500">
               <Shield className="h-4 w-4 text-violet-400/70" />
-              Private by default. Share a board only if you want to.
+              Boards stay private until you share one.
             </div>
             <h2 className="mb-6 text-3xl font-bold tracking-tight md:text-4xl">
-              Stop losing stuff.
+              Put your saves in one place.
             </h2>
             <Link
               href="/login"
               className="btn-brand group inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-white transition-all hover:brightness-110"
             >
-              Start free
+              Create a free account
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </motion.div>
@@ -284,10 +181,7 @@ export default function LandingPage() {
 
         <footer className="glass-on-gradient relative z-10 w-full border-t border-zinc-800/60 px-6 py-10 text-center text-xs text-zinc-400">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-2 gap-y-1">
-            <div className="flex items-center gap-2">
-              <Layers className="h-4 w-4" />
-              <span>Stickify</span>
-            </div>
+            <StickifyLogo size="xs" wordmarkClassName="text-xs text-zinc-400" />
             <CreatorCredit />
           </div>
           <p className="mt-4">

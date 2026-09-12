@@ -7,24 +7,3 @@ export function getOpenRouterModel(): string {
     DEFAULT_OPENROUTER_MODEL
   );
 }
-
-export type PostContentType = "text" | "code" | "link";
-
-export type AiCategoryOption = {
-  id: string;
-  name: string;
-};
-
-export type AiSuggestRequest = {
-  content: string;
-  type?: PostContentType;
-  existingTags?: string[];
-  categories?: AiCategoryOption[];
-};
-
-export type AiSuggestResponse = {
-  tags: string[];
-  contentType: PostContentType;
-  summary: string | null;
-  suggestedCategoryId: string | null;
-};

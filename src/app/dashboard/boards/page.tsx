@@ -1,8 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Layers, Hash, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import type { Category } from "@/lib/types/database";
+import { StickifyMark } from "@/components/brand/stickify-logo";
+import { BoardIcon } from "@/components/board/board-icon";
+// TEMP: uncomment to re-enable demo seeding for screenshots
+// import { SeedDemoButton } from "@/components/board/seed-demo-button";
 
 export default async function YourBoardsPage() {
   const supabase = await createClient();
@@ -33,10 +37,9 @@ export default async function YourBoardsPage() {
   return (
     <div className="h-full p-4 lg:p-6">
       <div className="mb-8">
-        <div className="mb-2 flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/20 to-indigo-500/20 border border-violet-500/15">
-            <Layers className="h-6 w-6 text-violet-400" />
-          </div>
+        {/* TEMP: wrap header + <SeedDemoButton /> again when needed for screenshots */}
+        <div className="flex items-center gap-3">
+          <StickifyMark size="lg" />
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Your Boards</h1>
             <p className="mt-0.5 text-sm text-zinc-500">
@@ -46,11 +49,15 @@ export default async function YourBoardsPage() {
             </p>
           </div>
         </div>
+        {/* <SeedDemoButton /> */}
       </div>
 
       {categories.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-800 bg-zinc-900/30 py-20">
-          <p className="text-sm text-zinc-500">No boards yet — use the + next to Boards in the sidebar</p>
+          <p className="text-sm text-zinc-500">
+            No boards yet — use the + next to Boards in the sidebar
+          </p>
+          {/* <SeedDemoButton /> */}
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -60,13 +67,11 @@ export default async function YourBoardsPage() {
               <Link
                 key={cat.id}
                 href={`/dashboard/${cat.slug}`}
-                className="group relative flex flex-col rounded-2xl border border-zinc-800 bg-card/50 p-5 transition-all hover:border-zinc-700 hover:bg-card/80 hover:shadow-lg hover:shadow-black/20 cursor-pointer"
+                className="group relative flex cursor-pointer flex-col rounded-2xl border border-zinc-800 bg-card/50 p-5 transition-all hover:border-zinc-700 hover:bg-card/80 hover:shadow-lg hover:shadow-black/20"
               >
                 <div className="mb-3 flex items-start justify-between gap-3">
                   <div className="flex min-w-0 items-center gap-2.5">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-500/10">
-                      <Hash className="h-4 w-4 text-violet-400" />
-                    </div>
+                    <BoardIcon icon={cat.icon} color={cat.color} size="md" />
                     <h2 className="truncate text-lg font-semibold text-zinc-100 group-hover:text-white">
                       {cat.name}
                     </h2>

@@ -18,6 +18,7 @@ export interface Database {
           name: string;
           slug: string;
           icon: string | null;
+          color: string | null;
           position: number;
           visibility: BoardVisibility;
           share_id: string | null;
@@ -30,6 +31,7 @@ export interface Database {
           name: string;
           slug: string;
           icon?: string | null;
+          color?: string | null;
           position?: number;
           visibility?: BoardVisibility;
           share_id?: string | null;
@@ -42,6 +44,7 @@ export interface Database {
           name?: string;
           slug?: string;
           icon?: string | null;
+          color?: string | null;
           position?: number;
           visibility?: BoardVisibility;
           share_id?: string | null;

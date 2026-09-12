@@ -31,6 +31,8 @@ yarn-error.log*
 # env files
 .env
 .env*.local
+!.env.local.example
+!.env.example
 
 # vercel
 .vercel
@@ -39,4 +41,25 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/supabase/*
+# Supabase CLI local state (keep migrations tracked)
+supabase/.temp/
+supabase/.branches/
+
+# Local agent notes and temporary context
+.agent-local/
+.ai-scratch/
+.local-ai/
+
+# Local-only instruction overrides
+AGENTS.local.md
+CLAUDE.local.md
+GEMINI.local.md
+
+# Temporary plans and handoffs
+*.local-plan.md
+*.local-handoff.md
+
+# Logs and temporary output
+*.log
+tmp/
+.temp/

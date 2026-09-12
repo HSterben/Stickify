@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Layers } from "lucide-react";
+import { StickifyLogo, StickifyWordmark } from "@/components/brand/stickify-logo";
 import { CreatorCredit } from "@/components/ui/creator-credit";
 
 export const metadata: Metadata = {
@@ -23,11 +23,10 @@ export default function PublicBoardLayout({
             href="/"
             className="flex items-center gap-2.5 transition-opacity hover:opacity-90"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 shadow-md shadow-violet-500/20">
-              <Layers className="h-4 w-4 text-white" />
-            </div>
-            <span className="text-sm font-bold tracking-tight">
-              Stickify <CreatorCredit className="text-[11px] font-normal text-zinc-500" />
+            <StickifyLogo size="sm" showWordmark={false} />
+            <span className="text-sm">
+              <StickifyWordmark className="text-sm" />{" "}
+              <CreatorCredit className="text-[11px] font-normal text-zinc-500" />
             </span>
           </Link>
           <Link

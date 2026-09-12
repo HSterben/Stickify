@@ -2,10 +2,11 @@
 
 import { createClient } from "@/lib/supabase/client";
 import { motion } from "framer-motion";
-import { Layers, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { StickifyLogo, StickifyWordmark } from "@/components/brand/stickify-logo";
 import { StickifyGrainient } from "@/components/ui/stickify-grainient";
 import { CreatorCredit } from "@/components/ui/creator-credit";
 
@@ -66,14 +67,14 @@ export default function LoginPage() {
         className="relative z-10 w-full max-w-sm px-6"
       >
         <div className="mb-8 text-center">
-          <div className="btn-brand mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl">
-            <Layers className="h-7 w-7 text-white" />
+          <div className="mx-auto mb-4 flex justify-center">
+            <StickifyLogo size="xl" showWordmark={false} priority />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-white">
-            Sign in to Stickify
+            Sign in to <StickifyWordmark className="text-2xl" />
           </h1>
           <p className="mt-2 text-sm text-zinc-300/80">
-            See your boards and saved stuff
+            Open your boards and saved posts
           </p>
         </div>
 
@@ -104,7 +105,7 @@ export default function LoginPage() {
           </button>
 
           <p className="mt-4 text-center text-xs text-zinc-400">
-            Your boards are private unless you share them
+            Boards stay private unless you share them
           </p>
         </div>
       </motion.div>
