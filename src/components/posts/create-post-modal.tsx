@@ -36,8 +36,8 @@ type BoardOption = { id: string; name: string };
 type LinkPreview = {
   title?: string;
   description?: string;
-  image?: string;
-  favicon?: string;
+  image?: string | null;
+  favicon?: string | null;
   domain?: string;
 };
 

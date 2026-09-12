@@ -174,8 +174,8 @@ export type PostDraft = {
   preview: {
     title?: string;
     description?: string;
-    image?: string;
-    favicon?: string;
+    image?: string | null;
+    favicon?: string | null;
     domain?: string;
   } | null;
   color: string | null;
