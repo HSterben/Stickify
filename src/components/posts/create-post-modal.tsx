@@ -150,26 +150,42 @@ export function CreatePostModal({
   const fetchPreview = async (targetUrl: string) => {
     setFetchingMeta(true);
     setUrl(targetUrl);
-    try {
-      const res = await fetch(`/api/metadata?url=${encodeURIComponent(targetUrl)}`);
-      if (!res.ok) {
-        setPreview(null);
-        return;
+    const fallbackDomain = (() => {
+      try {
+        return new URL(targetUrl).hostname.replace(/^www\./, "");
+      } catch {
+        return targetUrl;
       }
-      const data = await res.json();
-      setPreview({
-        title: data.title,
-        description: data.description,
-        image: data.image,
-        favicon: data.favicon,
-        domain: data.domain,
+    })();
+
+    try {
+      const res = await fetch("/api/metadata", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: targetUrl }),
       });
+      const data = res.ok ? await res.json() : null;
+      const nextPreview = {
+        title: (data?.title as string | undefined) || fallbackDomain,
+        description: (data?.description as string | undefined) || "",
+        image: (data?.image as string | null | undefined) ?? null,
+        favicon: (data?.favicon as string | null | undefined) ?? null,
+        domain: (data?.domain as string | undefined) || fallbackDomain,
+      };
+      setPreview(nextPreview);
       setShowLinkPreview(true);
-      if (!title.trim() && data.title) {
-        setTitle(String(data.title).slice(0, 80));
+      if (!title.trim() && nextPreview.title) {
+        setTitle(nextPreview.title.slice(0, 80));
       }
     } catch {
-      setPreview(null);
+      setPreview({
+        title: fallbackDomain,
+        description: "",
+        image: null,
+        favicon: null,
+        domain: fallbackDomain,
+      });
+      setShowLinkPreview(true);
     } finally {
       setFetchingMeta(false);
     }
@@ -243,6 +259,15 @@ export function CreatePostModal({
     const nextPosition = positions.length ? Math.max(...positions) + 1 : 0;
 
     const usePreview = showLinkPreview && !!url;
+    const fallbackDomain = url
+      ? (() => {
+          try {
+            return new URL(url).hostname.replace(/^www\./, "");
+          } catch {
+            return null;
+          }
+        })()
+      : null;
 
     const { data: post, error } = await (supabase as any)
       .from("posts")
@@ -255,11 +280,11 @@ export function CreatePostModal({
         content_code: null,
         code_language: null,
         url: url,
-        preview_title: usePreview ? preview?.title ?? null : null,
+        preview_title: usePreview ? preview?.title ?? fallbackDomain : null,
         preview_description: usePreview ? preview?.description ?? null : null,
         preview_image: usePreview ? preview?.image ?? null : null,
         preview_favicon: usePreview ? preview?.favicon ?? null : null,
-        preview_domain: usePreview ? preview?.domain ?? null : null,
+        preview_domain: usePreview ? preview?.domain ?? fallbackDomain : null,
         color,
         position: nextPosition,
       })

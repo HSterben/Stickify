@@ -1,40 +1,59 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as cheerio from "cheerio";
 
-export async function POST(request: NextRequest) {
+type MetadataResult = {
+  title: string;
+  description: string;
+  image: string | null;
+  favicon: string | null;
+  domain: string;
+};
+
+function domainFromUrl(parsedUrl: URL): string {
+  return parsedUrl.hostname.replace(/^www\./, "");
+}
+
+function fallbackMeta(parsedUrl: URL): MetadataResult {
+  const domain = domainFromUrl(parsedUrl);
+  return {
+    title: domain,
+    description: "",
+    image: null,
+    favicon: `${parsedUrl.origin}/favicon.ico`,
+    domain,
+  };
+}
+
+async function fetchMetadata(url: string): Promise<MetadataResult | { error: string; status: number }> {
+  let parsedUrl: URL;
   try {
-    const { url } = await request.json();
+    parsedUrl = new URL(url);
+  } catch {
+    return { error: "Invalid URL", status: 400 };
+  }
 
-    if (!url || typeof url !== "string") {
-      return NextResponse.json({ error: "URL is required" }, { status: 400 });
-    }
+  if (!/^https?:$/i.test(parsedUrl.protocol)) {
+    return { error: "Only http(s) URLs are supported", status: 400 };
+  }
 
-    let parsedUrl: URL;
-    try {
-      parsedUrl = new URL(url);
-    } catch {
-      return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
-    }
-
+  try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
 
     const response = await fetch(parsedUrl.toString(), {
       signal: controller.signal,
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; Stickify/1.0; +https://stickify.app)",
-        Accept: "text/html",
+        "User-Agent":
+          "Mozilla/5.0 (compatible; Stickify/1.0; +https://stickify.app)",
+        Accept: "text/html,application/xhtml+xml",
       },
+      redirect: "follow",
     });
 
     clearTimeout(timeout);
 
     if (!response.ok) {
-      return NextResponse.json({
-        title: parsedUrl.hostname,
-        domain: parsedUrl.hostname.replace("www.", ""),
-        images: ["/web-preview.png"],
-      });
+      return fallbackMeta(parsedUrl);
     }
 
     const html = await response.text();
@@ -43,8 +62,8 @@ export async function POST(request: NextRequest) {
     const title =
       $('meta[property="og:title"]').attr("content") ||
       $('meta[name="twitter:title"]').attr("content") ||
-      $("title").text() ||
-      parsedUrl.hostname;
+      $("title").text().trim() ||
+      domainFromUrl(parsedUrl);
 
     const description =
       $('meta[property="og:description"]').attr("content") ||
@@ -72,21 +91,47 @@ export async function POST(request: NextRequest) {
       favicon = new URL(favicon, parsedUrl.origin).toString();
     }
 
-    const domain = parsedUrl.hostname.replace("www.", "");
+    const domain = domainFromUrl(parsedUrl);
 
-    // Add the images property with the local image
-    return NextResponse.json({
+    return {
       title: title?.slice(0, 200) || domain,
       description: description?.slice(0, 500) || "",
       image: image || null,
       favicon: favicon || null,
       domain,
-      images: ["/web-preview.png"],
-    });
+    };
   } catch {
-    return NextResponse.json(
-      { error: "Failed to fetch metadata" },
-      { status: 500 }
-    );
+    return fallbackMeta(parsedUrl);
+  }
+}
+
+export async function GET(request: NextRequest) {
+  const url = request.nextUrl.searchParams.get("url");
+  if (!url) {
+    return NextResponse.json({ error: "URL is required" }, { status: 400 });
+  }
+
+  const result = await fetchMetadata(url);
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: result.status });
+  }
+  return NextResponse.json(result);
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const url = body?.url;
+    if (!url || typeof url !== "string") {
+      return NextResponse.json({ error: "URL is required" }, { status: 400 });
+    }
+
+    const result = await fetchMetadata(url);
+    if ("error" in result) {
+      return NextResponse.json({ error: result.error }, { status: result.status });
+    }
+    return NextResponse.json(result);
+  } catch {
+    return NextResponse.json({ error: "Failed to fetch metadata" }, { status: 500 });
   }
 }

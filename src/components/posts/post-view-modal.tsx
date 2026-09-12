@@ -38,9 +38,7 @@ export function PostViewModal({
         ? { icon: Globe, color: "text-sky-400", bg: "bg-sky-500/10" }
         : { icon: FileText, color: "text-rose-400", bg: "bg-rose-500/10" };
 
-  const showLinkCard =
-    !!post.url &&
-    !!(post.preview_title || post.preview_image || post.preview_description || post.preview_domain);
+  const showLinkCard = !!post.url;
 
   const bodyHtml =
     post.type === "code" && post.content_code && isNoteEmpty(post.content_text)

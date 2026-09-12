@@ -19,6 +19,7 @@ import {
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Loader2, Save, Link2, EyeOff, Sparkles } from "lucide-react";
+import { getDomain } from "@/lib/utils";
 
 interface EditPostModalProps {
   open: boolean;
@@ -26,6 +27,14 @@ interface EditPostModalProps {
   post: PostWithTags;
   onUpdated: (post: PostWithTags) => void;
 }
+
+type LinkPreviewFields = {
+  preview_title: string | null;
+  preview_description: string | null;
+  preview_image: string | null;
+  preview_favicon: string | null;
+  preview_domain: string | null;
+};
 
 export function EditPostModal({ open, onClose, post, onUpdated }: EditPostModalProps) {
   const initialHtml =
@@ -38,8 +47,16 @@ export function EditPostModal({ open, onClose, post, onUpdated }: EditPostModalP
   const [color, setColor] = useState<string | null>(post.color);
   const [tags, setTags] = useState<string[]>(post.tags.map((t) => t.name));
   const [url, setUrl] = useState<string | null>(post.url);
+  const [previewFields, setPreviewFields] = useState<LinkPreviewFields>({
+    preview_title: post.preview_title,
+    preview_description: post.preview_description,
+    preview_image: post.preview_image,
+    preview_favicon: post.preview_favicon,
+    preview_domain: post.preview_domain,
+  });
   const [showLinkPreview, setShowLinkPreview] = useState(
-    !!(post.preview_title || post.preview_image || post.preview_description)
+    !!post.url &&
+      !!(post.preview_title || post.preview_image || post.preview_description || post.preview_domain)
   );
   const [loading, setLoading] = useState(false);
   const [rewriting, setRewriting] = useState(false);
@@ -58,9 +75,59 @@ export function EditPostModal({ open, onClose, post, onUpdated }: EditPostModalP
     setColor(post.color);
     setTags(post.tags.map((t) => t.name));
     setUrl(post.url);
-    setShowLinkPreview(
-      !!(post.preview_title || post.preview_image || post.preview_description)
+    setPreviewFields({
+      preview_title: post.preview_title,
+      preview_description: post.preview_description,
+      preview_image: post.preview_image,
+      preview_favicon: post.preview_favicon,
+      preview_domain: post.preview_domain,
+    });
+    const hasPreviewMeta = !!(
+      post.preview_title ||
+      post.preview_image ||
+      post.preview_description ||
+      post.preview_domain
     );
+    setShowLinkPreview(!!post.url);
+    if (post.url && !hasPreviewMeta) {
+      void (async () => {
+        try {
+          const res = await fetch("/api/metadata", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: post.url }),
+          });
+          if (!res.ok) {
+            const domain = getDomain(post.url!);
+            setPreviewFields({
+              preview_title: domain,
+              preview_description: null,
+              preview_image: null,
+              preview_favicon: null,
+              preview_domain: domain,
+            });
+            return;
+          }
+          const data = await res.json();
+          setPreviewFields({
+            preview_title: data.title ?? null,
+            preview_description: data.description ?? null,
+            preview_image: data.image ?? null,
+            preview_favicon: data.favicon ?? null,
+            preview_domain: data.domain ?? getDomain(post.url!),
+          });
+        } catch {
+          const domain = getDomain(post.url!);
+          setPreviewFields({
+            preview_title: domain,
+            preview_description: null,
+            preview_image: null,
+            preview_favicon: null,
+            preview_domain: domain,
+          });
+        }
+      })();
+    }
     setSaveState("idle");
   }, [open, post]);
 
@@ -122,13 +189,14 @@ export function EditPostModal({ open, onClose, post, onUpdated }: EditPostModalP
       color,
       type: "text",
       content_text: isNoteEmpty(html) ? null : html,
-      // Preserve legacy columns; stop using them for new edits
       url,
-      preview_title: showLinkPreview ? post.preview_title : null,
-      preview_description: showLinkPreview ? post.preview_description : null,
-      preview_image: showLinkPreview ? post.preview_image : null,
-      preview_favicon: showLinkPreview ? post.preview_favicon : null,
-      preview_domain: showLinkPreview ? post.preview_domain : null,
+      preview_title: showLinkPreview ? previewFields.preview_title : null,
+      preview_description: showLinkPreview ? previewFields.preview_description : null,
+      preview_image: showLinkPreview ? previewFields.preview_image : null,
+      preview_favicon: showLinkPreview ? previewFields.preview_favicon : null,
+      preview_domain: showLinkPreview
+        ? previewFields.preview_domain ?? (url ? getDomain(url) : null)
+        : null,
     };
 
     const { error } = await (supabase as any)

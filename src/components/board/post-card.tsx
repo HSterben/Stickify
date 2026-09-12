@@ -58,9 +58,7 @@ export function PostCard({
   const supabase = createClient();
   const features = analyzePost(post);
 
-  const showLinkCard =
-    !!post.url &&
-    !!(post.preview_title || post.preview_image || post.preview_description || post.preview_domain);
+  const showLinkCard = !!post.url;
 
   const bodyHtml =
     post.type === "code" && post.content_code && isNoteEmpty(post.content_text)
