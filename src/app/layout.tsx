@@ -35,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const metadataBase = host
     ? new URL(`${proto}://${host}`)
     : getSiteUrl();
-  const previewImageUrl = new URL("/web-preview.jpg", metadataBase).toString();
+  const previewImageUrl = new URL("/stickify-og-2026.png", metadataBase).toString();
 
   return {
     metadataBase,

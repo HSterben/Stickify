@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const site = getSiteUrl();
   const origin = getSiteOrigin();
   const lastModified = new Date();
-  const previewImage = new URL("/web-preview.jpg", site).toString();
+  const previewImage = new URL("/stickify-og-2026.png", site).toString();
 
   return publicRoutes.map(({ path, changeFrequency, priority }) => {
     const entry: MetadataRoute.Sitemap[number] = {
