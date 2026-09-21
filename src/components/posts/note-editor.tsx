@@ -145,8 +145,8 @@ export function NoteEditor({
     onUpdate: ({ editor: ed }) => {
       onChange(ed.getHTML());
     },
+    
     onSelectionUpdate: () => setTick((n) => n + 1),
-    onTransaction: () => setTick((n) => n + 1),
   });
 
   useEffect(() => {
@@ -223,7 +223,7 @@ export function NoteEditor({
       )}
     >
       {editable && (
-        <div className="z-10 flex shrink-0 flex-wrap items-center gap-1 border-b border-zinc-800/80 bg-zinc-900/90 px-2 py-1.5 backdrop-blur-sm">
+        <div className="relative z-20 flex shrink-0 flex-wrap items-center gap-1 border-b border-zinc-800/80 bg-zinc-900 px-2 py-1.5">
           <div className="relative">
             <button
               type="button"
@@ -326,7 +326,15 @@ export function NoteEditor({
       {editable && editor && (
         <BubbleMenu
           editor={editor}
-          className="flex items-center gap-0.5 rounded-xl border border-zinc-700 bg-zinc-900 p-1 shadow-xl"
+          appendTo={() => document.body}
+          options={{
+            strategy: "fixed",
+            placement: "bottom",
+            offset: 8,
+            flip: true,
+            shift: true,
+          }}
+          className="z-[200] flex items-center gap-0.5 rounded-xl border border-zinc-700 bg-zinc-900 p-1 shadow-xl"
         >
           <BubbleBtn
             active={editor.isActive("bold")}
