@@ -162,7 +162,7 @@ export function Sidebar({
       .select()
       .single();
 
-    // Older DBs may not have categories.color yet — retry without it.
+    // Older DBs may not have categories.color yet, retry without it.
     if (error && /color|schema cache|column/i.test(error.message ?? "")) {
       ({ data, error } = await (supabase as any)
         .from("categories")

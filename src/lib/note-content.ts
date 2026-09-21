@@ -224,7 +224,7 @@ export function saveDraft(categoryId: string, draft: Omit<PostDraft, "updatedAt"
           : null,
       });
     } catch {
-      // Quota still exceeded — drop the draft rather than crash the editor.
+      // Quota still exceeded, drop the draft rather than crash the editor.
       try {
         localStorage.removeItem(key);
       } catch {

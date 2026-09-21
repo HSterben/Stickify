@@ -105,7 +105,7 @@ export function NoteEditor({
     editorProps: {
       attributes: {
         class:
-          "note-editor prose-invert max-w-none min-h-[8rem] px-1 py-1 text-sm text-zinc-200 focus:outline-none",
+          "note-body note-editor-surface max-w-none focus:outline-none",
       },
       handlePaste: (_view, event) => {
         const text = event.clipboardData?.getData("text/plain")?.trim() ?? "";
@@ -216,9 +216,14 @@ export function NoteEditor({
   ];
 
   return (
-    <div className={cn("relative rounded-xl border border-zinc-800 bg-zinc-950/40", className)}>
+    <div
+      className={cn(
+        "relative flex max-h-[min(55vh,32rem)] flex-col overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950/50",
+        className
+      )}
+    >
       {editable && (
-        <div className="flex flex-wrap items-center gap-1 border-b border-zinc-800/80 px-2 py-1.5">
+        <div className="z-10 flex shrink-0 flex-wrap items-center gap-1 border-b border-zinc-800/80 bg-zinc-900/90 px-2 py-1.5 backdrop-blur-sm">
           <div className="relative">
             <button
               type="button"
@@ -357,7 +362,7 @@ export function NoteEditor({
         </BubbleMenu>
       )}
 
-      <div className="px-3 py-2">
+      <div className="note-editor min-h-[8rem] flex-1 overflow-y-auto overscroll-contain px-3.5 py-3 sm:px-4 sm:py-3.5">
         <EditorContent editor={editor} />
       </div>
     </div>

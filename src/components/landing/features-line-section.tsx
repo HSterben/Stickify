@@ -89,7 +89,7 @@ const features: Feature[] = [
   },
 ];
 
-/** Soft vertical path — gentle sway, not a hard zigzag. */
+/** Soft vertical path, gentle sway, not a hard zigzag. */
 const SPINE_PATH =
   "M 50 4 C 48 40, 54 70, 50 100 C 46 130, 53 160, 50 190 C 47 220, 54 250, 50 280 C 46 310, 53 340, 50 370 C 47 400, 54 430, 50 460 C 46 490, 53 520, 50 550 C 48 580, 52 610, 50 640 C 49 660, 50 680, 50 696";
 

@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { Loader2, Sparkles } from "lucide-react";
 
 /**
- * TEMPORARY — remove after homepage screenshots are done.
+ * TEMPORARY, remove after homepage screenshots are done.
  * Fills the current account with sample boards + posts.
  */
 export function SeedDemoButton() {

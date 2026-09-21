@@ -45,7 +45,7 @@ export function NoteContent({
     return <p className="text-sm italic text-zinc-600">No content</p>;
   }
 
-  // Legacy markdown path when we couldn't convert cleanly — rare
+  // Legacy markdown path when we couldn't convert cleanly, rare
   if (!looksLikeHtml(resolved) && !looksLikeHtml(html ?? "")) {
     return <MarkdownContent content={html ?? ""} className={className} showEmptyHint={showEmptyHint} />;
   }
@@ -54,7 +54,7 @@ export function NoteContent({
     if (!interactive || !post || !onPostUpdated) return;
 
     const target = e.target as HTMLElement;
-    // Only the checkbox itself — not the task label/text.
+    // Only the checkbox itself, not the task label/text.
     if (target.tagName !== "INPUT") return;
     const checkbox = target as HTMLInputElement;
     if (checkbox.type !== "checkbox") return;
@@ -93,7 +93,7 @@ export function NoteContent({
     <div className={cn("space-y-2", className)}>
       <div
         className={cn(
-          "note-content text-sm leading-relaxed text-zinc-400",
+          "note-content note-body text-sm leading-relaxed",
           compact && "note-content-compact",
           interactive && "note-content-interactive"
         )}

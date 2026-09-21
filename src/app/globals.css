@@ -184,7 +184,7 @@ body {
   border: 1px solid rgba(133, 78, 254, 0.1);
 }
 
-/* Gradient text — restrained violet */
+/* Gradient text, restrained violet */
 .gradient-text {
   background: linear-gradient(135deg, #a78bfa 0%, #8b7cf8 50%, #c4b5fd 100%);
   -webkit-background-clip: text;
@@ -270,10 +270,20 @@ code[class*="language-"] {
 .token.property { color: #67e8f9; }
 .token.boolean { color: #f97316; }
 
-/* TipTap / note content */
+/* Shared note body, editor (TipTap) and card/view preview use the same look */
+.note-body,
+.note-editor .ProseMirror,
+.note-content {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: #a1a1aa;
+}
+
 .note-editor .ProseMirror {
   min-height: 8rem;
+  padding: 0.15rem 0.1rem;
 }
+
 .note-editor .ProseMirror p.is-editor-empty:first-child::before,
 .note-editor .ProseMirror p.has-focus.is-empty::before,
 .note-editor .ProseMirror .is-empty.has-focus::before,
@@ -284,49 +294,138 @@ code[class*="language-"] {
   height: 0;
   pointer-events: none;
 }
-.note-editor .ProseMirror p { margin: 0 0 0.65em; }
-.note-editor .ProseMirror h2 {
-  font-size: 1.15rem;
+
+.note-body p,
+.note-editor .ProseMirror p,
+.note-content p {
+  margin: 0 0 0.55em;
+}
+
+.note-body p:last-child,
+.note-editor .ProseMirror p:last-child,
+.note-content p:last-child {
+  margin-bottom: 0;
+}
+
+.note-body h2,
+.note-editor .ProseMirror h2,
+.note-content h2 {
+  font-size: 1.05rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
   color: #f4f4f5;
   margin: 0.85em 0 0.4em;
 }
-.note-editor .ProseMirror h3 {
-  font-size: 1rem;
+
+.note-body h3,
+.note-editor .ProseMirror h3,
+.note-content h3 {
+  font-size: 0.95rem;
   font-weight: 600;
   color: #e4e4e7;
-  margin: 0.75em 0 0.35em;
+  margin: 0.7em 0 0.35em;
 }
-.note-editor .ProseMirror ul,
-.note-editor .ProseMirror ol {
-  padding-left: 1.25rem;
-  margin: 0 0 0.65em;
+
+.note-body strong,
+.note-editor .ProseMirror strong,
+.note-content strong {
+  font-weight: 600;
+  color: #e4e4e7;
 }
+
+.note-body em,
+.note-editor .ProseMirror em,
+.note-content em {
+  font-style: italic;
+  color: #d4d4d8;
+}
+
+.note-body u,
+.note-editor .ProseMirror u,
+.note-content u {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.note-body ul:not([data-type="taskList"]),
+.note-body ol,
+.note-editor .ProseMirror ul:not([data-type="taskList"]),
+.note-editor .ProseMirror ol,
+.note-content ul:not([data-type="taskList"]),
+.note-content ol {
+  padding-left: 1.2rem;
+  margin: 0.35rem 0 0.65rem;
+}
+
+.note-body ul:not([data-type="taskList"]),
+.note-editor .ProseMirror ul:not([data-type="taskList"]),
+.note-content ul:not([data-type="taskList"]) {
+  list-style: disc;
+}
+
+.note-body ol,
+.note-editor .ProseMirror ol,
+.note-content ol {
+  list-style: decimal;
+}
+
+.note-body li,
+.note-editor .ProseMirror li,
+.note-content li {
+  margin: 0.15rem 0;
+}
+
+.note-body blockquote,
+.note-editor .ProseMirror blockquote,
+.note-content blockquote {
+  margin: 0.5rem 0 0.75rem;
+  padding: 0.15rem 0 0.15rem 0.85rem;
+  border-left: 2px solid rgba(139, 92, 246, 0.45);
+  color: #a1a1aa;
+}
+
+.note-body hr,
+.note-editor .ProseMirror hr,
+.note-content hr {
+  border: none;
+  border-top: 1px solid #27272a;
+  margin: 0.9rem 0;
+}
+
 .note-editor .ProseMirror ul[data-type="taskList"],
 .note-content ul[data-type="taskList"],
 .note-task-list {
   list-style: none;
   padding-left: 0;
-  margin: 0.25rem 0 0.75rem;
+  margin: 0.35rem 0 0.75rem;
 }
+
 .note-editor .ProseMirror ul[data-type="taskList"] li,
 .note-content ul[data-type="taskList"] li,
 .note-task-item {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
-  margin: 0.2rem 0;
+  gap: 0.55rem;
+  margin: 0.28rem 0;
 }
+
 .note-editor .ProseMirror ul[data-type="taskList"] li > label,
 .note-content ul[data-type="taskList"] li > label {
-  margin-top: 0.15rem;
+  margin-top: 0.2rem;
   flex-shrink: 0;
 }
+
 .note-editor .ProseMirror ul[data-type="taskList"] li > div,
 .note-content ul[data-type="taskList"] li > div {
   flex: 1;
   min-width: 0;
 }
+
+.note-editor .ProseMirror ul[data-type="taskList"] li > div > p,
+.note-content ul[data-type="taskList"] li > div > p {
+  margin: 0;
+}
+
 .note-editor .ProseMirror ul[data-type="taskList"] input[type="checkbox"],
 .note-content ul[data-type="taskList"] input[type="checkbox"] {
   width: 0.95rem;
@@ -334,6 +433,14 @@ code[class*="language-"] {
   accent-color: #7c3aed;
   cursor: pointer;
 }
+
+.note-editor .ProseMirror ul[data-type="taskList"] li[data-checked="true"] > div,
+.note-content ul[data-type="taskList"] li[data-checked="true"] > div {
+  color: #71717a;
+  text-decoration: line-through;
+  text-decoration-color: #52525b;
+}
+
 .note-content-interactive ul[data-type="taskList"] input[type="checkbox"] {
   pointer-events: auto;
   cursor: pointer;
@@ -347,6 +454,7 @@ code[class*="language-"] {
 .note-content-interactive ul[data-type="taskList"] li > div {
   pointer-events: none;
 }
+
 .note-editor .ProseMirror mark,
 .note-content mark {
   background: rgba(250, 204, 21, 0.25);
@@ -354,21 +462,36 @@ code[class*="language-"] {
   border-radius: 0.15rem;
   padding: 0 0.15rem;
 }
+
 .note-editor .ProseMirror pre,
-.note-content pre {
+.note-content pre,
+.note-code-block {
   background: #111114;
   border: 1px solid #27272a;
   border-radius: 0.5rem;
-  padding: 0.75rem;
+  padding: 0.8rem 0.9rem;
   overflow-x: auto;
-  font-size: 0.75rem;
-  margin: 0.5rem 0 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.65;
+  margin: 0.55rem 0 0.8rem;
+  color: #d4d4d8;
 }
+
+.note-editor .ProseMirror pre code,
+.note-content pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+}
+
 .note-editor .ProseMirror code,
 .note-content code {
   font-family: var(--font-mono);
   font-size: 0.85em;
 }
+
 .note-editor .ProseMirror :not(pre) > code,
 .note-content :not(pre) > code {
   background: rgba(39, 39, 42, 0.9);
@@ -376,6 +499,7 @@ code[class*="language-"] {
   padding: 0.1rem 0.35rem;
   border-radius: 0.25rem;
 }
+
 .note-editor .ProseMirror img,
 .note-content img,
 .note-image {
@@ -383,37 +507,68 @@ code[class*="language-"] {
   max-height: 18rem;
   border-radius: 0.5rem;
   border: 1px solid #27272a;
-  margin: 0.5rem 0;
+  margin: 0.55rem 0;
   object-fit: contain;
 }
+
 .note-content-compact img {
   max-height: 8rem;
 }
+
+.note-editor .ProseMirror a,
 .note-content a {
   color: #a78bfa;
   text-decoration: underline;
+  text-decoration-color: rgba(167, 139, 250, 0.4);
   text-underline-offset: 2px;
 }
-.note-content p {
-  margin: 0 0 0.5em;
+
+.note-editor .ProseMirror a:hover,
+.note-content a:hover {
+  color: #c4b5fd;
 }
-.note-content p:last-child {
-  margin-bottom: 0;
-}
-.note-content h2 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #f4f4f5;
-  margin: 0.5em 0 0.35em;
-}
-.note-content h3 {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #e4e4e7;
-  margin: 0.45em 0 0.3em;
-}
-.note-content ul:not([data-type="taskList"]),
-.note-content ol {
-  padding-left: 1.15rem;
-  margin: 0.25rem 0 0.5rem;
-}
+
+/* lowlight / highlight.js tokens inside note code blocks */
+.note-editor .ProseMirror pre .hljs-comment,
+.note-content pre .hljs-comment,
+.note-editor .ProseMirror pre .hljs-quote,
+.note-content pre .hljs-quote { color: #6b7280; }
+.note-editor .ProseMirror pre .hljs-keyword,
+.note-content pre .hljs-keyword,
+.note-editor .ProseMirror pre .hljs-selector-tag,
+.note-content pre .hljs-selector-tag { color: #c084fc; }
+.note-editor .ProseMirror pre .hljs-string,
+.note-content pre .hljs-string,
+.note-editor .ProseMirror pre .hljs-attr,
+.note-content pre .hljs-attr { color: #34d399; }
+.note-editor .ProseMirror pre .hljs-number,
+.note-content pre .hljs-number,
+.note-editor .ProseMirror pre .hljs-literal,
+.note-content pre .hljs-literal { color: #f59e0b; }
+.note-editor .ProseMirror pre .hljs-title,
+.note-content pre .hljs-title,
+.note-editor .ProseMirror pre .hljs-section,
+.note-content pre .hljs-section,
+.note-editor .ProseMirror pre .hljs-function,
+.note-content pre .hljs-function { color: #60a5fa; }
+.note-editor .ProseMirror pre .hljs-built_in,
+.note-content pre .hljs-built_in,
+.note-editor .ProseMirror pre .hljs-type,
+.note-content pre .hljs-type,
+.note-editor .ProseMirror pre .hljs-class .hljs-title,
+.note-content pre .hljs-class .hljs-title { color: #fbbf24; }
+.note-editor .ProseMirror pre .hljs-variable,
+.note-content pre .hljs-variable,
+.note-editor .ProseMirror pre .hljs-template-variable,
+.note-content pre .hljs-template-variable,
+.note-editor .ProseMirror pre .hljs-params,
+.note-content pre .hljs-params { color: #67e8f9; }
+.note-editor .ProseMirror pre .hljs-meta,
+.note-content pre .hljs-meta,
+.note-editor .ProseMirror pre .hljs-punctuation,
+.note-content pre .hljs-punctuation { color: #94a3b8; }
+.note-editor .ProseMirror pre .hljs-doctag,
+.note-content pre .hljs-doctag,
+.note-editor .ProseMirror pre .hljs-name,
+.note-content pre .hljs-name { color: #f97316; }
+

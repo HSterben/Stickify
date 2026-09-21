@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getSiteOrigin, getSiteUrl } from "@/lib/site";
 
-/** Public marketing routes only — dashboard content is auth-gated and private. */
+/** Public marketing routes only, dashboard content is auth-gated and private. */
 const publicRoutes: {
   path: string;
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];

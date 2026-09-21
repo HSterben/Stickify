@@ -55,7 +55,7 @@ export default async function YourBoardsPage() {
       {categories.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-800 bg-zinc-900/30 py-20">
           <p className="text-sm text-zinc-500">
-            No boards yet — use the + next to Boards in the sidebar
+            No boards yet, use the + next to Boards in the sidebar
           </p>
           {/* <SeedDemoButton /> */}
         </div>

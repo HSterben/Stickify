@@ -354,9 +354,9 @@ export function CreatePostModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className={`relative w-full max-w-2xl overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-900 shadow-2xl ${MODAL_MAX_HEIGHT}`}
+            className={`relative flex w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 shadow-2xl ${MODAL_MAX_HEIGHT}`}
           >
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-800 bg-zinc-900 px-6 py-4">
+            <div className="flex shrink-0 items-center justify-between border-b border-zinc-800 bg-zinc-900 px-6 py-4">
               <div>
                 <h2 className="text-lg font-semibold">New Post</h2>
                 <p className="mt-0.5 text-[11px] text-zinc-500">
@@ -375,7 +375,7 @@ export function CreatePostModal({
               </button>
             </div>
 
-            <div className="space-y-5 p-6">
+            <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain p-6">
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-zinc-400">
                   Title{" "}
@@ -477,7 +477,7 @@ export function CreatePostModal({
               </div>
             </div>
 
-            <div className="sticky bottom-0 flex items-center justify-end gap-3 border-t border-zinc-800 bg-zinc-900 px-6 py-4">
+            <div className="flex shrink-0 items-center justify-end gap-3 border-t border-zinc-800 bg-zinc-900 px-6 py-4">
               <button
                 onClick={handleClose}
                 className="rounded-lg px-4 py-2 text-sm text-zinc-400 hover:text-white"

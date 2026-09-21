@@ -55,7 +55,7 @@ const DEMO_BOARDS: DemoBoard[] = [
       {
         title: "Homepage mood",
         tags: ["marketing"],
-        html: `<p>Quiet product demo. One headline. One screenshot. No feature grid in the hero.</p><p>Look at tools people actually open daily — calm, dense, useful.</p>`,
+        html: `<p>Quiet product demo. One headline. One screenshot. No feature grid in the hero.</p><p>Look at tools people actually open daily, calm, dense, useful.</p>`,
       },
       {
         title: "Vercel blog",
@@ -83,7 +83,7 @@ const DEMO_BOARDS: DemoBoard[] = [
         title: "Week 4 reading",
         pinned: true,
         tags: ["school"],
-        html: `<h2>Distributed systems</h2><ul data-type="taskList"><li data-type="taskItem" data-checked="true"><label><input type="checkbox" checked><span></span></label><div><p>Chapter 8 — consistency models</p></div></li><li data-type="taskItem" data-checked="false"><label><input type="checkbox"><span></span></label><div><p>Chapter 9 — consensus</p></div></li><li data-type="taskItem" data-checked="false"><label><input type="checkbox"><span></span></label><div><p>Practice quiz</p></div></li></ul>`,
+        html: `<h2>Distributed systems</h2><ul data-type="taskList"><li data-type="taskItem" data-checked="true"><label><input type="checkbox" checked><span></span></label><div><p>Chapter 8, consistency models</p></div></li><li data-type="taskItem" data-checked="false"><label><input type="checkbox"><span></span></label><div><p>Chapter 9, consensus</p></div></li><li data-type="taskItem" data-checked="false"><label><input type="checkbox"><span></span></label><div><p>Practice quiz</p></div></li></ul>`,
       },
       {
         title: "SQL join cheatsheet",
@@ -176,12 +176,12 @@ const DEMO_BOARDS: DemoBoard[] = [
     color: "indigo",
     posts: [
       {
-        title: "Meeting notes — Fri",
+        title: "Meeting notes, Fri",
         tags: ["work"],
         html: `<p><strong>Attendees:</strong> Alex, Jordan, Sam</p><ul><li>Ship checklist feature this week</li><li>Keep capture flow under 3 clicks</li><li>Follow up on share links</li></ul>`,
       },
       {
-        title: "Snippet — debounce",
+        title: "Snippet, debounce",
         html: `<pre><code class="language-javascript">function debounce(fn, ms) {\n  let t\n  return (...args) => {\n    clearTimeout(t)\n    t = setTimeout(() => fn(...args), ms)\n  }\n}</code></pre>`,
       },
     ],
